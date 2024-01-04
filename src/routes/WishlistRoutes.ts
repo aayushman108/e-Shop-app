@@ -1,16 +1,10 @@
 import express from "express";
-import { Request, Response } from "express";
+import WishlistController from "../controllers/WishlistController";
 
 const router = express.Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.send("Displays all products in wishlist");
-});
-router.post("/:productId", (req: Request, res: Response) => {
-  res.send("Add a product into wishlist");
-});
-router.delete("/:productId", (req: Request, res: Response) => {
-  res.send("Delete a product from wishlist");
-});
+router.get("/", WishlistController.getUserWishlist);
+router.post("/:productId", WishlistController.addToWishlist);
+router.delete("/:productId", WishlistController.removeFromWishlist);
 
 export default router;
