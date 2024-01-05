@@ -1,4 +1,5 @@
 import { Model, DataTypes } from "sequelize";
+import { sequelize } from "../config/database";
 
 class Wishlist extends Model {
   public id!: number;

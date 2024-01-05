@@ -1,13 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
-//import cors from 'cors';
 import { sequelize } from "./config/database";
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-//app.use(cors());
 
 // Routes
 import userRoutes from "./routes/UserRoutes";
@@ -24,7 +22,7 @@ app.use("/", homeRoutes);
 
 // Start server
 const PORT = process.env.PORT || 3000;
-sequelize.sync().then(() => {
+sequelize.sync({ force: true }).then(() => {
   app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   });
