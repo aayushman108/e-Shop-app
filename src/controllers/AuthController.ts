@@ -32,6 +32,17 @@ const AuthController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+
+  refresh: async (req: Request, res: Response) => {
+    try {
+      const { refreshToken } = req.body;
+      const newAccessToken = await AuthService.refresh(refreshToken);
+      res.json({ accessToken: newAccessToken });
+    } catch (error) {
+      console.error(error);
+      res.status(401).json({ error: "Unauthorized: Invalid refresh token" });
+    }
+  },
 };
 
 export default AuthController;

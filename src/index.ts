@@ -21,7 +21,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/", homeRoutes);
 
-sequelize.sync({ force: true });
+sequelize.sync({ force: false });
 
 app.listen(serverConfig.serverPort, () => {
   console.log(
