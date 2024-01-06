@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { sequelize } from "./config/database";
+import { serverConfig } from "./config/config";
 
 const app = express();
 
@@ -20,11 +21,10 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/", homeRoutes);
 
-// Start server
-const PORT = process.env.PORT || 3000;
-
 sequelize.sync({ force: true });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+app.listen(serverConfig.serverPort, () => {
+  console.log(
+    `Server is running at http://localhost:${serverConfig.serverPort}`
+  );
 });
