@@ -2,19 +2,19 @@ import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../config/database";
 
 class User extends Model {
-  public id!: string;
+  public userId!: string;
   public username!: string;
   public email!: string;
   public password!: string;
   public fullName!: string;
   public address!: string;
-  public isAuthenticated!: boolean;
+  public isVerified!: boolean;
   public isAdmin!: boolean;
 }
 
 User.init(
   {
-    user_id: {
+    userId: {
       type: DataTypes.STRING,
       primaryKey: true,
     },
@@ -31,17 +31,17 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    full_Name: {
+    fullName: {
       type: DataTypes.STRING,
     },
     address: {
       type: DataTypes.STRING,
     },
-    is_verified: {
+    isVerified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    is_admin: {
+    isAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
@@ -49,6 +49,7 @@ User.init(
   {
     tableName: "users",
     sequelize,
+    underscored: true,
   }
 );
 

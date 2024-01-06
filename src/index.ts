@@ -22,8 +22,9 @@ app.use("/", homeRoutes);
 
 // Start server
 const PORT = process.env.PORT || 3000;
-sequelize.sync({ force: true }).then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
-  });
+
+sequelize.sync({ force: true });
+
+app.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`);
 });
