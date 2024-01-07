@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import HttpStatus from "http-status-codes";
+import { NextFunction, Request, Response } from "express";
 import AuthService from "../services/AuthService";
 
 const AuthController = {
-  signup: async (req: Request, res: Response) => {
+  signup: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { username, email, password } = req.body;
       const { user, accessToken, refreshToken } = await AuthService.signup({
@@ -11,14 +12,18 @@ const AuthController = {
         password,
       });
 
-      res.json({ user, accessToken, refreshToken });
+      return res.status(HttpStatus.CREATED).json({
+        message: "Signed up successfully",
+        user,
+        accessToken,
+        refreshToken,
+      });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   },
 
-  login: async (req: Request, res: Response) => {
+  login: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password } = req.body;
       const { user, accessToken, refreshToken } = await AuthService.login({
@@ -26,21 +31,24 @@ const AuthController = {
         password,
       });
 
-      res.json({ user, accessToken, refreshToken });
+      return res.status(HttpStatus.CREATED).json({
+        message: "Logged in successfully",
+        user,
+        accessToken,
+        refreshToken,
+      });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   },
 
-  refresh: async (req: Request, res: Response) => {
+  refresh: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { refreshToken } = req.body;
       const newAccessToken = await AuthService.refresh(refreshToken);
       res.json({ accessToken: newAccessToken });
     } catch (error) {
-      console.error(error);
-      res.status(401).json({ error: "Unauthorized: Invalid refresh token" });
+      next(error);
     }
   },
 };

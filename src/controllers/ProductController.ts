@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import ProductService from "../services/ProductService";
 import { calculateTotalPages } from "../utils/Pagination";
 
 const ProductController = {
-  getProducts: async (req: Request, res: Response) => {
+  getProducts: async (req: Request, res: Response, next: NextFunction) => {
     const page = parseInt(req.query.page as string) || 1;
     const pageSize = parseInt(req.query.pageSize as string) || 10;
 
@@ -20,19 +20,17 @@ const ProductController = {
         totalProducts,
       });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   },
 
-  getProductById: async (req: Request, res: Response) => {
+  getProductById: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const productId = parseInt(req.params.productId, 10);
       const product = await ProductService.getProductById(productId);
       res.json(product);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   },
 };

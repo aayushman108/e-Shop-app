@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { serverConfig } from "../config/config";
 import { ISignup } from "../interface/Signup";
 import { ILogin } from "../interface/Login";
+import BadRequestError from "../error/BadRequestError";
 
 const { accessTokenSecret, refreshTokenSecret } = serverConfig.jwt;
 
@@ -21,6 +22,12 @@ const generateTokens = (user: User) => {
 const AuthService = {
   signup: async (body: ISignup) => {
     const { username, email, password } = body;
+
+    const userEmailExists = await AuthService.getUserByEmail(email);
+    if (userEmailExists) {
+      throw new BadRequestError(`User with email: ${email} already exists`);
+    }
+
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -43,12 +50,12 @@ const AuthService = {
     const { email, password } = body;
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      throw new Error("User not found");
+      throw new BadRequestError("Invalid Email or Password");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new Error("Invalid password");
+      throw new BadRequestError("Invalid Email or Password");
     }
 
     // Generate token pair (access token and refresh token)
@@ -64,24 +71,28 @@ const AuthService = {
       const decoded: any = jwt.verify(refreshToken, refreshTokenSecret);
 
       if (!decoded || !decoded.id) {
-        throw new Error("Invalid refresh token");
+        throw new BadRequestError("Invalid refresh token");
       }
 
       // Fetch the user from the database
       const user = await User.findByPk(decoded.id);
 
       if (!user || !user.userId) {
-        throw new Error("User not found");
+        throw new BadRequestError("User not found");
       }
       // Generate a new access token
-      const newAccessToken = jwt.sign({ id: user.userId }, accessTokenSecret, {
+      const newAccessToken = jwt.sign({ id: user?.userId }, accessTokenSecret, {
         expiresIn: "1h",
       });
 
       return newAccessToken;
     } catch (error) {
-      throw new Error("Invalid refresh token");
+      throw new BadRequestError("Invalid refresh token");
     }
+  },
+
+  getUserByEmail: async (email: string) => {
+    return User.findOne({ where: { email } });
   },
 };
 

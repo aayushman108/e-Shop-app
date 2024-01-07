@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import { sequelize } from "./config/database";
 import { serverConfig } from "./config/config";
+import { genericErrorHandler } from "./middlewares/ErrorHandler";
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/", homeRoutes);
+
+app.use(genericErrorHandler);
 
 sequelize.sync({ force: false });
 
