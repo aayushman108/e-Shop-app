@@ -2,6 +2,8 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { serverConfig } from "../config/config";
+import { ISignup } from "../interface/Signup";
+import { ILogin } from "../interface/Login";
 
 const { accessTokenSecret, refreshTokenSecret } = serverConfig.jwt;
 
@@ -17,7 +19,8 @@ const generateTokens = (user: User) => {
 };
 
 const AuthService = {
-  signup: async (username: string, email: string, password: string) => {
+  signup: async (body: ISignup) => {
+    const { username, email, password } = body;
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -36,7 +39,8 @@ const AuthService = {
     return { user, ...tokenPair };
   },
 
-  login: async (email: string, password: string) => {
+  login: async (body: ILogin) => {
+    const { email, password } = body;
     const user = await User.findOne({ where: { email } });
     if (!user) {
       throw new Error("User not found");

@@ -5,11 +5,11 @@ const AuthController = {
   signup: async (req: Request, res: Response) => {
     try {
       const { username, email, password } = req.body;
-      const { user, accessToken, refreshToken } = await AuthService.signup(
+      const { user, accessToken, refreshToken } = await AuthService.signup({
         username,
         email,
-        password
-      );
+        password,
+      });
 
       res.json({ user, accessToken, refreshToken });
     } catch (error) {
@@ -21,10 +21,10 @@ const AuthController = {
   login: async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
-      const { user, accessToken, refreshToken } = await AuthService.login(
+      const { user, accessToken, refreshToken } = await AuthService.login({
         email,
-        password
-      );
+        password,
+      });
 
       res.json({ user, accessToken, refreshToken });
     } catch (error) {
