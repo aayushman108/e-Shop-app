@@ -1,6 +1,6 @@
 import express from "express";
 import WishlistController from "../controllers/WishlistController";
-import { authenticateUser } from "../middlewares/Authmiddleware";
+import { authenticateUser } from "../middlewares/Auth";
 
 const router = express.Router();
 
