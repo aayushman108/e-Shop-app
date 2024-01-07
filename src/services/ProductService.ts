@@ -1,8 +1,18 @@
 import Product from "../models/Product";
+import { calculateOffset } from "../utils/Pagination";
 
 const ProductService = {
-  getAllProducts: async () => {
-    return Product.findAll();
+  getProducts: async (page: number, pageSize: number) => {
+    const offset = calculateOffset({ page, pageSize });
+
+    return Product.findAll({
+      offset,
+      limit: pageSize,
+    });
+  },
+
+  getTotalProductsCount: async () => {
+    return Product.count();
   },
 
   getProductById: async (productId: number) => {
