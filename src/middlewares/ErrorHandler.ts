@@ -5,6 +5,7 @@ import UnauthenticatedError from "../error/UnauthenticatedError";
 
 import BadRequestError from "../error/BadRequestError";
 import NotFoundError from "../error/NotFoundError";
+import ConflictError from "../error/ConflictError";
 
 /**
  * Error response middleware for 404 not found. This middleware function should be at the very bottom of the stack.
@@ -27,7 +28,11 @@ export function genericErrorHandler(
   }
 
   if (err instanceof NotFoundError) {
-    return res.status(HttpStatus.BAD_REQUEST).json({ message: err.message });
+    return res.status(HttpStatus.NOT_FOUND).json({ message: err.message });
+  }
+
+  if (err instanceof ConflictError) {
+    return res.status(HttpStatus.CONFLICT).json({ message: err.message });
   }
 
   if (err instanceof UnauthenticatedError) {

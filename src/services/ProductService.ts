@@ -11,7 +11,7 @@ const ProductService = {
       limit: pageSize,
     });
 
-    if (!products) {
+    if (products.length === 0) {
       throw new NotFoundError("Products not found");
     }
 
@@ -21,7 +21,7 @@ const ProductService = {
   getTotalProductsCount: async () => {
     const productCount = await Product.count();
 
-    if (!productCount) {
+    if (productCount === 0) {
       throw new NotFoundError("Products not found");
     }
 
