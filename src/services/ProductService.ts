@@ -19,15 +19,23 @@ const ProductService = {
   },
 
   getTotalProductsCount: async () => {
-    return Product.count();
+    const productCount = await Product.count();
+
+    if (!productCount) {
+      throw new NotFoundError("Products not found");
+    }
+
+    return productCount;
   },
 
   getProductById: async (productId: number) => {
-    const singleProdct = await Product.findByPk(productId);
+    const singleProduct = await Product.findByPk(productId);
 
-    if (!singleProdct) {
+    if (!singleProduct) {
       throw new NotFoundError("Product not found");
     }
+
+    return singleProduct;
   },
 };
 
