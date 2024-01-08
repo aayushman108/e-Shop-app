@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import { sequelize } from "./config/database";
 import { serverConfig } from "./config/config";
-import { genericErrorHandler } from "./middlewares/ErrorHandler";
+import { genericErrorHandler, notFoundError } from "./middlewares/ErrorHandler";
 
 const app = express();
 
@@ -23,6 +23,8 @@ app.use("/api/cart", cartRoutes);
 app.use("/", homeRoutes);
 
 app.use(genericErrorHandler);
+
+app.use(notFoundError);
 
 sequelize.sync({ force: false });
 
