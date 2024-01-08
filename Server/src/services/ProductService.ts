@@ -1,8 +1,27 @@
 import Product from "../models/Product";
 import { calculateOffset } from "../utils/Pagination";
 import NotFoundError from "../error/NotFoundError";
+import { IProduct } from "../interface/Product";
 
 const ProductService = {
+  createProduct: async (productData: IProduct) => {
+    try {
+      const { productName, description, price, stockQuantity, imageUrl } =
+        productData;
+      console.log(productData);
+      const product = await Product.create({
+        productName,
+        description,
+        price,
+        stockQuantity,
+        imageUrl,
+      });
+      return product;
+    } catch (error) {
+      throw new Error("Hellow world");
+    }
+  },
+
   getProducts: async (page: number, pageSize: number) => {
     const offset = calculateOffset({ page, pageSize });
 
