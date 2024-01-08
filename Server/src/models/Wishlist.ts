@@ -26,7 +26,7 @@ Wishlist.init(
       },
     },
     productId: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: Product,

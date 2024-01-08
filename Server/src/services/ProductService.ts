@@ -8,7 +8,6 @@ const ProductService = {
     try {
       const { productName, description, price, stockQuantity, imageUrl } =
         productData;
-      console.log(productData);
       const product = await Product.create({
         productName,
         description,

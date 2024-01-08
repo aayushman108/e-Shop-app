@@ -8,19 +8,18 @@ const ProductController = {
     try {
       const { productName, description, price, stockQuantity } = req.body;
 
-      // Multer middleware will add the "file" property to the request
-      if (!req.file) {
-        return res.status(400).json({ error: "No image provided!" });
-      }
+      const file = req.file;
+      if (!file) return res.status(400).send("No image in the request");
 
-      const imageUrl = req.file.path;
+      const fileName = file.filename;
+      const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
 
       const productData = {
         productName,
         description,
         price,
         stockQuantity,
-        imageUrl,
+        imageUrl: `${basePath}${fileName}`,
       };
 
       const product = await ProductService.createProduct(productData);
