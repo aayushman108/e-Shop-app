@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 import { sequelize } from "./config/database";
 import { serverConfig } from "./config/config";
 import { genericErrorHandler, notFoundError } from "./middlewares/ErrorHandler";
@@ -14,6 +15,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/users", userRoutes);
@@ -26,7 +28,7 @@ app.use(genericErrorHandler);
 
 app.use(notFoundError);
 
-sequelize.sync({ force: true });
+sequelize.sync({ force: false });
 
 app.listen(serverConfig.serverPort, () => {
   console.log(
