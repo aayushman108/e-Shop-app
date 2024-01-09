@@ -1,7 +1,55 @@
-import { Model, DataTypes } from "sequelize";
+// import { Model, DataTypes } from "sequelize";
+// import { sequelize } from "../config/database";
+// import User from "./User";
+// import Product from "./Product";
+
+// class Cart extends Model {
+//   public cartId!: number;
+//   public userId!: string;
+//   public productId!: string;
+//   public quantity!: number;
+// }
+
+// Cart.init(
+//   {
+//     cartId: {
+//       type: DataTypes.INTEGER,
+//       autoIncrement: true,
+//       primaryKey: true,
+//     },
+//     userId: {
+//       type: DataTypes.UUID,
+//       allowNull: false,
+//       references: {
+//         model: User,
+//         key: "user_id",
+//       },
+//     },
+//     productId: {
+//       type: DataTypes.UUID,
+//       allowNull: false,
+//       references: {
+//         model: Product,
+//         key: "product_id",
+//       },
+//     },
+//     quantity: {
+//       type: DataTypes.INTEGER,
+//       allowNull: false,
+//       defaultValue: 1,
+//     },
+//   },
+//   {
+//     tableName: "carts",
+//     sequelize,
+//     underscored: true,
+//   }
+// );
+
+// export default Cart;
+
+import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/database";
-import User from "./User";
-import Product from "./Product";
 
 class Cart extends Model {
   public cartId!: number;
@@ -20,18 +68,10 @@ Cart.init(
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: User,
-        key: "user_id",
-      },
     },
     productId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: Product,
-        key: "product_id",
-      },
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -43,6 +83,12 @@ Cart.init(
     tableName: "carts",
     sequelize,
     underscored: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["user_id", "product_id"],
+      },
+    ],
   }
 );
 

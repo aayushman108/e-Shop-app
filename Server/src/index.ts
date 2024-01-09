@@ -26,7 +26,7 @@ app.use(genericErrorHandler);
 
 app.use(notFoundError);
 
-sequelize.sync({ force: false });
+sequelize.sync({ force: true });
 
 app.listen(serverConfig.serverPort, () => {
   console.log(
