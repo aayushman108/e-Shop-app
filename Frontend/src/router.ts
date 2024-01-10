@@ -12,7 +12,6 @@ export function initializeApp() {
 
 function clearContent() {
   const contentContainer = document.getElementById("app");
-  console.log(contentContainer);
   if (contentContainer) {
     contentContainer.innerHTML = "";
   }
@@ -35,40 +34,20 @@ export async function navigateToPage(page: string) {
 
   switch (page) {
     case "home":
-      try {
-        updateUrl(page);
-        const content = await renderHome();
-        renderContent(content);
-      } catch (error) {
-        console.error(`Error rendering home page: ${error}`);
-      }
+      history.pushState({ page }, "", "/");
+      renderContent(renderHome());
       break;
     case "cart":
-      try {
-        updateUrl(page);
-        const content = await renderCart();
-        renderContent(content);
-      } catch (error) {
-        console.error(`Error rendering cart page: ${error}`);
-      }
+      updateUrl(page);
+      renderContent(renderCart());
       break;
     case "wishlist":
-      try {
-        updateUrl(page);
-        const content = await renderWishlist();
-        renderContent(content);
-      } catch (error) {
-        console.error(`Error rendering wishlist page: ${error}`);
-      }
+      updateUrl(page);
+      renderContent(renderWishlist());
       break;
     case "products":
-      try {
-        updateUrl(page);
-        const content = await renderProducts();
-        renderContent(content);
-      } catch (error) {
-        console.error(`Error rendering products page: ${error}`);
-      }
+      updateUrl(page);
+      renderContent(renderProducts());
       break;
     // case "single-product":
     //   renderContent(renderSingleProduct());
