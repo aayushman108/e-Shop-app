@@ -17,10 +17,14 @@ function clearContent() {
   }
 }
 
-function renderContent(content: string) {
+function renderContent(content: any) {
   const contentContainer = document.getElementById("app");
-  if (contentContainer) {
+  if (!contentContainer) return;
+  console.log(typeof content);
+  if (typeof content === "string") {
     contentContainer.innerHTML = content;
+  } else if (typeof content === "object") {
+    contentContainer.appendChild(content);
   }
 }
 
@@ -35,7 +39,12 @@ export async function navigateToPage(page: string) {
   switch (page) {
     case "home":
       history.pushState({ page }, "", "/");
-      renderContent(renderHome());
+      try {
+        const content = await renderHome();
+        renderContent(content);
+      } catch (error) {
+        console.error(`Error rendering home page: ${error}`);
+      }
       break;
     case "cart":
       updateUrl(page);
@@ -47,12 +56,16 @@ export async function navigateToPage(page: string) {
       break;
     case "products":
       updateUrl(page);
-      renderContent(renderProducts());
+      try {
+        const content = await renderProducts();
+        console.log(content);
+        renderContent(content);
+      } catch (error) {
+        console.error(`Error rendering home page: ${error}`);
+      }
+      // renderContent(renderProducts());
       break;
-    // case "single-product":
-    //   renderContent(renderSingleProduct());
-    //   break;
     default:
-      console.error(`Unknown page: ${page}`);
+      console.error(`404 error`);
   }
 }

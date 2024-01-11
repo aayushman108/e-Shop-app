@@ -1,53 +1,79 @@
 import { navigateToPage } from "../router";
 
 export function renderHeader() {
-  // Create header element
   const header = document.createElement("header");
+  header.className = "header";
+  header.innerHTML = `
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand d-lg-none" href="#">e-shop</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="d-flex justify-content-between px-4" style="border: 2px solid black; width: 100%;">
+            <a class="navbar-brand d-none d-lg-block" href="#">e-shop</a>
+            <ul class="navbar-nav mb-2 mb-lg-0 order-lg-2 order-sm-1">
+              <li class="nav-item">
+                <a class="nav-link" id="home" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="products" href="#">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="user" href="#">User</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="wishlist" href="#">Wishlist</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="cart" href="#">Cart</a>
+              </li>
+            </ul>
+            <form class="order-lg-1 order-sm-2" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+  `;
 
-  // Create navigation element
-  const nav = document.createElement("nav");
-
-  // Create Home link
-  const homeLink = document.createElement("a");
-  //homeLink.href = "#";
-  homeLink.textContent = "Home";
-  homeLink.addEventListener("click", function () {
-    navigateToPage("home");
+  const links = header.querySelectorAll(
+    ".nav-link"
+  ) as NodeListOf<HTMLAnchorElement>;
+  links.forEach((link) => {
+    link.addEventListener("click", handleNavLinkClick);
   });
 
-  // Create Cart link
-  const cartLink = document.createElement("a");
-  //cartLink.href = "#";
-  cartLink.textContent = "Cart";
-  cartLink.addEventListener("click", function () {
-    navigateToPage("cart");
-  });
-
-  // Create Wishlist link
-  const wishlistLink = document.createElement("a");
-  //wishlistLink.href = "#";
-  wishlistLink.textContent = "Wishlist";
-  wishlistLink.addEventListener("click", function () {
-    navigateToPage("wishlist");
-  });
-
-  // Create Products link
-  const productsLink = document.createElement("a");
-  //productsLink.href = "#";
-  productsLink.textContent = "Products";
-  productsLink.addEventListener("click", function () {
-    navigateToPage("products");
-  });
-
-  // Append links to the navigation element
-  nav.appendChild(homeLink);
-  nav.appendChild(cartLink);
-  nav.appendChild(wishlistLink);
-  nav.appendChild(productsLink);
-
-  // Append navigation element to the header
-  header.appendChild(nav);
-
-  // Append header to the document body
   document.body.prepend(header);
+}
+
+function handleNavLinkClick(event: Event) {
+  event.preventDefault();
+
+  const target = event.target as HTMLAnchorElement;
+  const pageId = target.id;
+
+  const links = document.querySelectorAll(
+    ".nav-link"
+  ) as NodeListOf<HTMLAnchorElement>;
+  links.forEach((link) => link.classList.remove("nav-link--active"));
+
+  target.classList.add("nav-link--active");
+
+  navigateToPage(pageId);
 }
