@@ -1,5 +1,5 @@
 import axios from "axios";
-import http from "./HttpService";
+import { http } from "./HttpService";
 import { ILogin, ISignup } from "../interface";
 
 export async function signup(formData: ISignup) {
