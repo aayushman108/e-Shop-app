@@ -3,7 +3,7 @@ import { navigateToPage } from "../router";
 export function renderHeader() {
   const header = document.createElement("header");
   header.className = "header";
-  header.innerHTML = `
+  header.innerHTML = /* html */ `
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand d-lg-none" href="#">e-shop</a>
@@ -29,7 +29,10 @@ export function renderHeader() {
                 <a class="nav-link" id="products" href="#">Products</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="user" href="#">User</a>
+                <a class="nav-link" id="login" href="#">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="signup" href="#">Signup</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="wishlist" href="#">Wishlist</a>
@@ -68,12 +71,12 @@ function handleNavLinkClick(event: Event) {
   const target = event.target as HTMLAnchorElement;
   const pageId = target.id;
 
-  const links = document.querySelectorAll(
-    ".nav-link"
-  ) as NodeListOf<HTMLAnchorElement>;
-  links.forEach((link) => link.classList.remove("nav-link--active"));
+  // const links = document.querySelectorAll(
+  //   ".nav-link"
+  // ) as NodeListOf<HTMLAnchorElement>;
+  // links.forEach((link) => link.classList.remove("nav-link--active"));
 
-  target.classList.add("nav-link--active");
+  // target.classList.add("nav-link--active");
 
   navigateToPage(pageId);
 }
