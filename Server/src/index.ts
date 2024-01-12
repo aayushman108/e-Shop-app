@@ -10,6 +10,7 @@ import productRoutes from "./routes/ProductsRoutes";
 import wishlistRoutes from "./routes/WishlistRoutes";
 import cartRoutes from "./routes/CartRoutes";
 import homeRoutes from "./routes/HomeRoute";
+import Product from "./models/Product";
 
 const app = express();
 
@@ -28,7 +29,12 @@ app.use(genericErrorHandler);
 
 app.use(notFoundError);
 
-sequelize.sync({ force: false });
+// Product.sync({ force: true });
+// Product.sync({ force: true });
+// Product.sync({ force: true });
+// Product.sync({ force: true });
+
+sequelize.sync();
 
 app.listen(serverConfig.serverPort, () => {
   console.log(

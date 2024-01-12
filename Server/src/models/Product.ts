@@ -76,6 +76,10 @@ Product.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     description: {
       type: DataTypes.STRING,
     },
@@ -91,7 +95,7 @@ Product.init(
   {
     tableName: "products",
     sequelize,
-    underscored: true,
+    //underscored: true,
   }
 );
 Product.hasMany(Wishlist, { foreignKey: "productId" });

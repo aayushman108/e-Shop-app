@@ -80,13 +80,13 @@ Wishlist.init(
   {
     tableName: "wishlists",
     sequelize,
-    underscored: true,
-    indexes: [
-      {
-        unique: true,
-        fields: ["user_id", "product_id"],
-      },
-    ],
+    //underscored: true,
+    // indexes: [
+    //   {
+    //     unique: true,
+    //     fields: ["user_id", "product_id"],
+    //   },
+    // ],
   }
 );
 

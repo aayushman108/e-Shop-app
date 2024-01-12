@@ -6,14 +6,21 @@ import { IProduct } from "../interface/Product";
 const ProductService = {
   createProduct: async (productData: IProduct) => {
     try {
-      const { productName, description, price, stockQuantity, imageUrl } =
-        productData;
+      const {
+        productName,
+        description,
+        price,
+        stockQuantity,
+        imageUrl,
+        category,
+      } = productData;
       const product = await Product.create({
         productName,
         description,
         price,
         stockQuantity,
         imageUrl,
+        category,
       });
       return product;
     } catch (error) {

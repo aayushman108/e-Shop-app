@@ -5,7 +5,8 @@ import HttpStatus from "http-status-codes";
 const CartController = {
   getUserCart: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = req.params.userId;
+      const userId = req.body.userId;
+      console.log(userId);
       const cart = await CartService.getUserCart(userId);
       return res.json(cart);
     } catch (error) {
@@ -15,9 +16,10 @@ const CartController = {
 
   addToCart: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = req.params.userId;
-      const productId = req.params.productId;
-      await CartService.addToCart(userId, productId);
+      const userId = req.body.userId;
+      const productId = req.body.productId;
+      const quantity = req.body.quantity;
+      await CartService.addToCart(userId, productId, quantity);
       res
         .status(HttpStatus.OK)
         .json({ message: "Product added to cart successfully" });

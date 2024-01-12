@@ -6,7 +6,8 @@ import HttpStatus from "http-status-codes";
 const ProductController = {
   createProduct: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { productName, description, price, stockQuantity } = req.body;
+      const { productName, description, price, stockQuantity, category } =
+        req.body;
 
       const file = req.file;
       if (!file) return res.status(400).send("No image in the request");
@@ -20,6 +21,7 @@ const ProductController = {
         price,
         stockQuantity,
         imageUrl: `${basePath}${fileName}`,
+        category,
       };
 
       const product = await ProductService.createProduct(productData);

@@ -65,6 +65,28 @@ export async function navigateToPage(page: string) {
       }
       // renderContent(renderProducts());
       break;
+    case "signup":
+      updateUrl(page);
+      try {
+        const content = await renderSignup();
+        console.log(content);
+        renderContent(content);
+      } catch (error) {
+        console.error(`Error rendering Signup page: ${error}`);
+      }
+      // renderContent(renderProducts());
+      break;
+    case "login":
+      updateUrl(page);
+      try {
+        const content = await renderLogin();
+        console.log(content);
+        renderContent(content);
+      } catch (error) {
+        console.error(`Error rendering Login page: ${error}`);
+      }
+      // renderContent(renderProducts());
+      break;
     default:
       console.error(`404 error`);
   }

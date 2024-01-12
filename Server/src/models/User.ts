@@ -112,7 +112,7 @@ User.init(
   {
     tableName: "users",
     sequelize,
-    underscored: true,
+    //underscored: true,
   }
 );
 
