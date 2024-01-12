@@ -1,10 +1,10 @@
 import axios from "axios";
+import http from "./HttpService";
 
 export async function getProducts() {
   try {
-    // const response = await axios.get("http://localhost:3000/api/products");
+    // const response = await http.get("/api/products");
     const response = await axios.get("https://fakestoreapi.com/products");
-    //https://fakestoreapi.com/products
     return response.data;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -14,7 +14,7 @@ export async function getProducts() {
 
 export async function addToCart(productId: number) {
   try {
-    const response = await axios.post("http://localhost:3000/api/cart", {
+    const response = await http.post("/api/cart", {
       productId,
     });
     return response.data;
@@ -26,7 +26,7 @@ export async function addToCart(productId: number) {
 
 export async function addToWishlist(productId: number) {
   try {
-    const response = await axios.post("http://localhost:3000/api/wishlist", {
+    const response = await http.post("/api/wishlist", {
       productId,
     });
     return response.data;
@@ -38,7 +38,7 @@ export async function addToWishlist(productId: number) {
 
 export async function getCartProducts() {
   try {
-    const response = await axios.get("http://localhost:3000/api/cart");
+    const response = await http.get("/api/cart");
     return response.data;
   } catch (error) {
     console.error("Error fetching cart products:", error);
@@ -48,7 +48,7 @@ export async function getCartProducts() {
 
 export async function getWishlistProducts() {
   try {
-    const response = await axios.get("http://localhost:3000/api/wishlist");
+    const response = await http.get("/api/wishlist");
     return response.data;
   } catch (error) {
     console.error("Error fetching wishlist products:", error);
