@@ -30,9 +30,20 @@ function renderContent(content: any) {
   }
 }
 
+// function updateUrl(page: string) {
+//   const url = `/${page}`;
+//   history.pushState({ page }, "", url);
+// }
 function updateUrl(page: string) {
   const url = `/${page}`;
-  history.pushState({ page }, "", url);
+
+  if (history.pushState) {
+    // Only use pushState if it's available
+    history.pushState({ page }, "", url);
+  } else {
+    // Fallback to setting location directly
+    window.location.href = url;
+  }
 }
 
 export async function navigateToPage(page: string) {

@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../config/config";
 
 const http: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true,
+  //withCredentials: true,
 });
 
 export default http;

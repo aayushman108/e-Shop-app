@@ -1,5 +1,7 @@
 import * as yup from "yup";
 import { navigateToPage } from "../../router";
+import { ISignup } from "../../interface";
+import { signup } from "../../services/ApiServices";
 
 export async function renderSignup() {
   const signupPage = document.createElement("div") as HTMLDivElement;
@@ -76,15 +78,19 @@ export async function renderSignup() {
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
-    const formDataObject: Record<string, string> = {};
-    formData.forEach((value, key) => {
-      formDataObject[key] = value.toString();
-    });
+    console.log(formData);
+    const formDataObject: ISignup = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      username: formData.get("username") as string,
+      confirmPassword: formData.get("confirmPassword") as string,
+    };
 
     console.log(formDataObject);
 
     try {
       await schema.validate(formDataObject, { abortEarly: false });
+      signup(formDataObject);
       console.log("Form submitted successfully!");
       navigateToPage("home");
     } catch (error) {

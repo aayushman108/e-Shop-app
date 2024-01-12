@@ -23,6 +23,7 @@ const AuthService = {
   signup: async (body: ISignup) => {
     const { username, email, password } = body;
 
+    console.log(body);
     const userEmailExists = await AuthService.getUserByEmail(email);
     if (userEmailExists) {
       throw new BadRequestError(`User with email: ${email} already exists`);

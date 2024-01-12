@@ -1,5 +1,7 @@
 import * as yup from "yup";
 import { navigateToPage } from "../../router";
+import { ILogin } from "../../interface";
+import { login } from "../../services/ApiServices";
 
 export async function renderLogin() {
   const loginPage = document.createElement("div") as HTMLDivElement;
@@ -25,25 +27,22 @@ export async function renderLogin() {
       </div>
     `;
   const form = loginPage.querySelector("#loginForm") as HTMLFormElement | null;
-  const password = loginPage.querySelector(
-    "#password"
-  ) as HTMLInputElement | null;
-  const passwordError = loginPage.querySelector(
-    "#passwordError"
-  ) as HTMLDivElement;
 
-  password?.addEventListener("input", (e) => {
-    e.preventDefault();
-    passwordError.innerHTML = "";
-  });
+  // Event listener for resetting errors on input change
+  const resetErrorOnInput = (inputId: string, errorId: string) => {
+    const input = loginPage.querySelector(
+      `#${inputId}`
+    ) as HTMLInputElement | null;
+    const error = loginPage.querySelector(`#${errorId}`) as HTMLDivElement;
 
-  const email = loginPage.querySelector("#email") as HTMLInputElement | null;
-  const emailError = loginPage.querySelector("#emailError") as HTMLDivElement;
+    input?.addEventListener("input", (e) => {
+      e.preventDefault();
+      error.innerHTML = "";
+    });
+  };
 
-  email?.addEventListener("input", (e) => {
-    e.preventDefault();
-    emailError.innerHTML = "";
-  });
+  resetErrorOnInput("email", "emailError");
+  resetErrorOnInput("password", "passwordError");
 
   const schema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
@@ -58,13 +57,14 @@ export async function renderLogin() {
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
-    const formDataObject: Record<string, string> = {};
-    formData.forEach((value, key) => {
-      formDataObject[key] = value.toString();
-    });
+    const formDataObject: ILogin = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    };
     console.log(formDataObject);
     try {
       await schema.validate(formDataObject, { abortEarly: false });
+      login(formDataObject);
       console.log("Form submitted successfully!");
       navigateToPage("home");
     } catch (error) {

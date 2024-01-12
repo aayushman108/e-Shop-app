@@ -1,2 +1,2 @@
 export const API_BASE_URL =
-  process.env.VITE_BASE_URL || "http://localhost:3000";
+  (import.meta.env.VITE_BASE_URL as string) || "http://localhost:3000";
