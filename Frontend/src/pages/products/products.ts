@@ -1,6 +1,9 @@
 import { IProduct } from "../../interface";
-import { getProducts } from "../../services/ApiServices";
-import { addToCart, addToWishlist } from "../../utils";
+import {
+  addToCart,
+  getCartProducts,
+  getProducts,
+} from "../../services/ApiServices";
 
 function renderProduct(product: IProduct) {
   const productItem = document.createElement("div");
@@ -16,15 +19,29 @@ function renderProduct(product: IProduct) {
     Add to Wishlist
   </button>
 `;
-  const addToCartButton = productItem.querySelector(".add-to-cart-btn");
-  const addToWishlistButton = productItem.querySelector(".add-to-wishlist-btn");
+  const addToCartButton = productItem.querySelector(
+    ".add-to-cart-btn"
+  ) as HTMLButtonElement;
+  const addToWishlistButton = productItem.querySelector(
+    ".add-to-wishlist-btn"
+  ) as HTMLButtonElement;
+  console.log(addToCartButton);
 
-  addToCartButton?.addEventListener("click", () =>
-    addToCart(product.productId)
-  );
+  addToCartButton.addEventListener("click", async () => {
+    const userId = localStorage.getItem("userId");
+    console.log(product.productId);
+    if (userId) {
+      await addToCart(product.productId, userId);
+      await getCartProducts(userId);
+    } else {
+      return;
+    }
+  });
   addToWishlistButton?.addEventListener("click", () =>
-    addToWishlist(product.productId)
+    //addToWishlist(product.productId)
+    console.log("wishlist operation")
   );
+
   return productItem;
 }
 export async function renderProducts() {

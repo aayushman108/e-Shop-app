@@ -5,7 +5,7 @@ import HttpStatus from "http-status-codes";
 const CartController = {
   getUserCart: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = req.body.userId;
+      const userId = req.params.userId;
       console.log(userId);
       const cart = await CartService.getUserCart(userId);
       return res.json(cart);
@@ -16,8 +16,8 @@ const CartController = {
 
   addToCart: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = req.body.userId;
-      const productId = req.body.productId;
+      const userId = req.params.userId;
+      const productId = req.params.productId;
       const quantity = req.body.quantity;
       await CartService.addToCart(userId, productId, quantity);
       res

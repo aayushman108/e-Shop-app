@@ -65,7 +65,9 @@ export async function renderLogin() {
     console.log(formDataObject);
     try {
       await schema.validate(formDataObject, { abortEarly: false });
-      await login(formDataObject);
+      const user = await login(formDataObject);
+      localStorage.setItem("userId", user.user.userId);
+      console.log(user.user.userId);
       console.log("Form submitted successfully!");
       navigateToPage("home");
     } catch (error) {
