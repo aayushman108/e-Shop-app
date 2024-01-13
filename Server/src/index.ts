@@ -11,6 +11,9 @@ import wishlistRoutes from "./routes/WishlistRoutes";
 import cartRoutes from "./routes/CartRoutes";
 import homeRoutes from "./routes/HomeRoute";
 import Product from "./models/Product";
+import User from "./models/User";
+import Wishlist from "./models/Wishlist";
+import Cart from "./models/Cart";
 
 const app = express();
 
@@ -29,12 +32,12 @@ app.use(genericErrorHandler);
 
 app.use(notFoundError);
 
-// Product.sync({ force: true });
-// Product.sync({ force: true });
-// Product.sync({ force: true });
-// Product.sync({ force: true });
+Product.sync({ force: false });
+User.sync({ force: false });
+Wishlist.sync({ force: true });
+Cart.sync({ force: true });
 
-sequelize.sync();
+//sequelize.sync();
 
 app.listen(serverConfig.serverPort, () => {
   console.log(

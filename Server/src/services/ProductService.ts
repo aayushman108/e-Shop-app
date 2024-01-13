@@ -24,7 +24,8 @@ const ProductService = {
       });
       return product;
     } catch (error) {
-      throw new Error("Hellow world");
+      console.log(error);
+      throw new Error("Error adding product");
     }
   },
 

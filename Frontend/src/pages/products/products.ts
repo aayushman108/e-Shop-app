@@ -5,7 +5,7 @@ import { addToCart, addToWishlist } from "../../utils";
 function renderProduct(product: IProduct) {
   const productItem = document.createElement("div");
   productItem.innerHTML = `
-  <h3>${product.title}</h3>
+  <h3>${product.productName}</h3>
   <p>${product.description}</p>
   <p>Price: ${product.price}</p>
   <button class="add-to-cart-btn">
@@ -18,15 +18,18 @@ function renderProduct(product: IProduct) {
   const addToCartButton = productItem.querySelector(".add-to-cart-btn");
   const addToWishlistButton = productItem.querySelector(".add-to-wishlist-btn");
 
-  addToCartButton?.addEventListener("click", () => addToCart(product.id));
+  addToCartButton?.addEventListener("click", () =>
+    addToCart(product.productId)
+  );
   addToWishlistButton?.addEventListener("click", () =>
-    addToWishlist(product.id)
+    addToWishlist(product.productId)
   );
   return productItem;
 }
 export async function renderProducts() {
   const container = document.createElement("div");
-  const products: IProduct[] = await getProducts();
+  const productsPageDetails = await getProducts();
+  const products: IProduct[] = productsPageDetails.products;
   products.forEach((product) => {
     container.appendChild(renderProduct(product));
   });

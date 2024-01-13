@@ -1,7 +1,7 @@
-export function addToCart(productId: number) {
+export function addToCart(productId: string) {
   console.log(`Product added to cart: ${productId}`);
 }
 
-export function addToWishlist(productId: number) {
+export function addToWishlist(productId: string) {
   console.log(`Product added to wishlist: ${productId}`);
 }

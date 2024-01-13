@@ -26,8 +26,8 @@ export async function login(formData: ILogin) {
 
 export async function getProducts() {
   try {
-    // const response = await axios.get("/api/products");
-    const response = await axios.get("https://fakestoreapi.com/products");
+    const response = await http.get("/api/products/");
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching products:", error);

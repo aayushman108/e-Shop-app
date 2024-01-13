@@ -81,7 +81,7 @@ Product.init(
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(1000),
     },
     price: {
       type: DataTypes.FLOAT,

@@ -1,14 +1,11 @@
 export interface IProduct {
-  id: number;
-  title: string;
-  price: number;
+  productName: string;
   description: string;
   category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  price: number;
+  stockQuantity: number;
+  productId: string;
+  imageUrl: string;
 }
 
 export interface ISignup {
