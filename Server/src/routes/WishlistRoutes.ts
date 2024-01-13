@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(authenticateUser);
 router.get("/:userId", WishlistController.getUserWishlist);
-router.post("/:productId", WishlistController.addToWishlist);
-router.delete("/:productId", WishlistController.removeFromWishlist);
+router.post("/:userId/:productId", WishlistController.addToWishlist);
+router.delete("/:userId/:productId", WishlistController.removeFromWishlist);
 
 export default router;

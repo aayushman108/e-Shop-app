@@ -83,3 +83,25 @@ export async function getWishlistProducts(userId: string) {
     throw error;
   }
 }
+
+export async function removeFromCart(productId: string, userId: string) {
+  try {
+    const response = await http.delete(`/api/cart/${userId}/${productId}`);
+    console.log(response.data.message);
+    return response.data;
+  } catch (error) {
+    console.error("Error removing product from cart:", error);
+    throw error;
+  }
+}
+
+export async function removeFromWishlist(productId: string, userId: string) {
+  try {
+    const response = await http.delete(`/api/cart/${userId}/${productId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error removing product from wishlist:", error);
+    throw error;
+  }
+}
