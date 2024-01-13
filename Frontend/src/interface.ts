@@ -19,3 +19,19 @@ export interface ILogin {
   email: string;
   password: string;
 }
+
+export interface IUser {
+  userId: string;
+  username: string;
+  email: string;
+  address: string | null;
+}
+
+export interface ICartProduct {
+  Product: IProduct;
+  User: IUser;
+  cartId: number;
+  productId: string;
+  quantity: number;
+  userId: string;
+}

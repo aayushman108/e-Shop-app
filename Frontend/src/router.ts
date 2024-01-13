@@ -57,7 +57,12 @@ export async function navigateToPage(page: string) {
     case "cart":
       handleNavStyle(page);
       updateUrl(page);
-      renderContent(renderCart());
+      try {
+        const content = await renderCart();
+        renderContent(content);
+      } catch (error) {
+        console.error(`Error rendering cart page: ${error}`);
+      }
       break;
     case "wishlist":
       handleNavStyle(page);
@@ -71,7 +76,7 @@ export async function navigateToPage(page: string) {
         const content = await renderProducts();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering home page: ${error}`);
+        console.error(`Error rendering products page: ${error}`);
       }
       // renderContent(renderProducts());
       break;
