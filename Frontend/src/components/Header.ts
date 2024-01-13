@@ -1,4 +1,5 @@
 import { navigateToPage } from "../router";
+import { getSearchResult } from "../services/ApiServices";
 
 export function renderHeader() {
   const header = document.createElement("header");
@@ -44,7 +45,8 @@ export function renderHeader() {
             <form class="order-lg-1 order-sm-2" role="search">
               <input
                 class="form-control me-2"
-                type="search"
+                type="text"
+                id="searchInput"
                 placeholder="Search"
                 aria-label="Search"
               />
@@ -63,20 +65,42 @@ export function renderHeader() {
   });
 
   document.body.prepend(header);
+
+  //search
+  const searchInput = header.querySelector("#searchInput") as HTMLInputElement;
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const query = searchInput.value;
+      performSearch(query);
+    }
+  });
 }
+
+const performSearch = async (query: string) => {
+  if (!query) {
+    alert("Please enter a search term.");
+    return;
+  }
+
+  try {
+    const searchResult = await getSearchResult(query);
+    console.log(searchResult);
+    const encodedSearchResult = encodeURIComponent(
+      JSON.stringify(searchResult)
+    );
+    navigateToPage("search", encodedSearchResult);
+  } catch (error) {
+    console.error("Error during search:", error);
+    alert("An error occurred during the search. Please try again.");
+  }
+};
 
 function handleNavLinkClick(event: Event) {
   event.preventDefault();
 
   const target = event.target as HTMLAnchorElement;
   const pageId = target.id;
-
-  // const links = document.querySelectorAll(
-  //   ".nav-link"
-  // ) as NodeListOf<HTMLAnchorElement>;
-  // links.forEach((link) => link.classList.remove("nav-link--active"));
-
-  // target.classList.add("nav-link--active");
 
   navigateToPage(pageId);
 }

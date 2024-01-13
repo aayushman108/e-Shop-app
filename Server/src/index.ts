@@ -49,7 +49,6 @@ Cart.sync({ force: false });
 
 app.listen(serverConfig.serverPort, () => {
   console.log(
-    `Server is running at http://localhost:${serverConfig.serverPort}`,
-    `${__dirname}`
+    `Server is running at http://localhost:${serverConfig.serverPort}`
   );
 });

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/upload", upload.single("image"), ProductController.createProduct);
 router.get("/", ProductController.getProducts);
-router.get("/:productId", ProductController.getProductById);
 router.get("/search", ProductController.getSearchResults);
+router.get("/:productId", ProductController.getProductById);
 
 export default router;

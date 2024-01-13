@@ -5,6 +5,7 @@ import { renderWishlist } from "./pages/wishlist/Wishlist";
 import { renderProducts } from "./pages/products/Products";
 import { renderSignup } from "./pages/signup/Signup";
 import { renderLogin } from "./pages/login/Login";
+import { renderSearches } from "./pages/search/search";
 // import { renderSingleProduct } from "./pages/productDetails/ProductDetails";
 
 export function initializeApp() {
@@ -40,7 +41,7 @@ function updateUrl(page: string) {
   }
 }
 
-export async function navigateToPage(page: string) {
+export async function navigateToPage(page: string, data?: any) {
   clearContent();
 
   switch (page) {
@@ -83,7 +84,6 @@ export async function navigateToPage(page: string) {
       } catch (error) {
         console.error(`Error rendering products page: ${error}`);
       }
-      // renderContent(renderProducts());
       break;
     case "signup":
       handleNavStyle(page);
@@ -94,7 +94,6 @@ export async function navigateToPage(page: string) {
       } catch (error) {
         console.error(`Error rendering Signup page: ${error}`);
       }
-      // renderContent(renderProducts());
       break;
     case "login":
       handleNavStyle(page);
@@ -104,6 +103,16 @@ export async function navigateToPage(page: string) {
         renderContent(content);
       } catch (error) {
         console.error(`Error rendering Login page: ${error}`);
+      }
+      break;
+    case "search":
+      const url = `/search?query=${data}`;
+      history.pushState({ path: url }, "", url);
+      try {
+        const content = await renderSearches();
+        renderContent(content);
+      } catch (error) {
+        console.error(`Error rendering search page: ${error}`);
       }
       break;
     default:

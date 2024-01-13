@@ -122,3 +122,14 @@ export async function removeFromWishlist(productId: string, userId: string) {
     throw error;
   }
 }
+
+export async function getSearchResult(query: string) {
+  try {
+    const response = await http.get(`/api/products/search?query=${query}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching search products:", error);
+    throw error;
+  }
+}
