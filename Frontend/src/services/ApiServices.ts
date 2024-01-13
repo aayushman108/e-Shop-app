@@ -34,9 +34,15 @@ export async function getProducts() {
   }
 }
 
-export async function addToCart(productId: string, userId: string) {
+export async function addToCart(
+  productId: string,
+  userId: string,
+  quantity?: number
+) {
   try {
-    const response = await http.post(`/api/cart/${userId}/${productId}`);
+    const response = await http.post(`/api/cart/${userId}/${productId}`, {
+      quantity,
+    });
     console.log(response.data.message);
     return response.data;
   } catch (error) {
@@ -45,11 +51,10 @@ export async function addToCart(productId: string, userId: string) {
   }
 }
 
-export async function addToWishlist(productId: number) {
+export async function addToWishlist(productId: string, userId: string) {
   try {
-    const response = await http.post("/api/wishlist", {
-      productId,
-    });
+    const response = await http.post(`/api/cart/${userId}/${productId}`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error adding product to wishlist:", error);
@@ -68,9 +73,10 @@ export async function getCartProducts(userId: string) {
   }
 }
 
-export async function getWishlistProducts() {
+export async function getWishlistProducts(userId: string) {
   try {
-    const response = await http.get("/api/wishlist");
+    const response = await http.get(`/api/wishlist/${userId}`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching wishlist products:", error);

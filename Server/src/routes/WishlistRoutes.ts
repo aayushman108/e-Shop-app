@@ -5,7 +5,7 @@ import { authenticateUser } from "../middlewares/Auth";
 const router = express.Router();
 
 router.use(authenticateUser);
-router.get("/", WishlistController.getUserWishlist);
+router.get("/:userId", WishlistController.getUserWishlist);
 router.post("/:productId", WishlistController.addToWishlist);
 router.delete("/:productId", WishlistController.removeFromWishlist);
 

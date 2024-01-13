@@ -1,8 +1,10 @@
 import { IProduct } from "../../interface";
 import {
   addToCart,
+  addToWishlist,
   getCartProducts,
   getProducts,
+  getWishlistProducts,
 } from "../../services/ApiServices";
 
 function renderProduct(product: IProduct) {
@@ -37,10 +39,16 @@ function renderProduct(product: IProduct) {
       return;
     }
   });
-  addToWishlistButton?.addEventListener("click", () =>
-    //addToWishlist(product.productId)
-    console.log("wishlist operation")
-  );
+  addToWishlistButton.addEventListener("click", async () => {
+    const userId = localStorage.getItem("userId");
+    console.log(product.productId);
+    if (userId) {
+      await addToWishlist(product.productId, userId);
+      await getWishlistProducts(userId);
+    } else {
+      return;
+    }
+  });
 
   return productItem;
 }
