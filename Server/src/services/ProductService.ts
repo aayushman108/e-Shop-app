@@ -2,6 +2,7 @@ import Product from "../models/Product";
 import { calculateOffset } from "../utils/Pagination";
 import NotFoundError from "../error/NotFoundError";
 import { IProduct } from "../interface/Product";
+import { Op } from "sequelize";
 
 const ProductService = {
   createProduct: async (productData: IProduct) => {
@@ -62,6 +63,24 @@ const ProductService = {
     }
 
     return singleProduct;
+  },
+
+  getSearchProducts: async (query: string) => {
+    const results = await Product.findAll({
+      where: {
+        [Op.or]: [
+          { productName: { [Op.iLike]: `%${query}%` } },
+          { description: { [Op.iLike]: `%${query}%` } },
+          { category: { [Op.iLike]: `%${query}%` } },
+        ],
+      },
+    });
+
+    if (results.length === 0) {
+      throw new NotFoundError("Products not found");
+    }
+
+    return results;
   },
 };
 

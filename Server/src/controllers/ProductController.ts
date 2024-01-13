@@ -64,6 +64,22 @@ const ProductController = {
       next(error);
     }
   },
+
+  getSearchResults: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { query } = req.query;
+      if (!query) {
+        return res.status(400).json({ error: "Query parameter is required." });
+      }
+
+      const searchResult = await ProductService.getSearchProducts(
+        query as string
+      );
+      res.json(searchResult);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default ProductController;

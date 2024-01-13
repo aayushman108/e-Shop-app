@@ -42,7 +42,7 @@ app.use(notFoundError);
 
 Product.sync({ force: false });
 User.sync({ force: false });
-Wishlist.sync({ force: true });
+Wishlist.sync({ force: false });
 Cart.sync({ force: false });
 
 //sequelize.sync();
