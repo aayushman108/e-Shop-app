@@ -95,6 +95,23 @@ export async function removeFromCart(productId: string, userId: string) {
   }
 }
 
+export async function updateCartProduct(
+  productId: string,
+  userId: string,
+  quantity: number
+) {
+  try {
+    const response = await http.put(`/api/cart/${userId}/${productId}`, {
+      quantity,
+    });
+    console.log(response.data.message);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating product from cart:", error);
+    throw error;
+  }
+}
+
 export async function removeFromWishlist(productId: string, userId: string) {
   try {
     const response = await http.delete(`/api/cart/${userId}/${productId}`);

@@ -1,50 +1,59 @@
 import { ICartProduct, IProduct } from "../../interface";
-import { getCartProducts } from "../../services/ApiServices";
+import { navigateToPage } from "../../router";
+import {
+  getCartProducts,
+  removeFromCart,
+  updateCartProduct,
+} from "../../services/ApiServices";
 
 function renderCartProduct(product: IProduct, quantity: number) {
   const cartItem = document.createElement("div");
   cartItem.innerHTML = /* html */ `
   <h3>${product.productName}</h3>
   <img src= "${product.imageUrl}" alt= "..." />
-  <p>${product.description}</p>
   <p>Price: ${product.price}</p>
-  <p>Price: ${quantity}</p>
-  <button class="add-to-cart-btn">
-    Add to Cart
-  </button>
-  <button class="add-to-wishlist-btn">
-    Add to Wishlist
-  </button>
+  <p>Quantity: ${quantity}</p>
+  <p>Total price: ${product.price * quantity} </p>
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" value="${quantity}" min="1">
+  <button class="update-btn">Update</button>
+  <button class="delete-btn">Delete</button>
 `;
-  const addToCartButton = cartItem.querySelector(
-    ".add-to-cart-btn"
-  ) as HTMLButtonElement;
-  const addToWishlistButton = cartItem.querySelector(
-    ".add-to-wishlist-btn"
-  ) as HTMLButtonElement;
-  console.log(addToCartButton);
-  console.log(addToWishlistButton);
 
-  // addToCartButton.addEventListener("click", async () => {
-  //   const userId = localStorage.getItem("userId");
-  //   console.log(product.productId);
-  //   if (userId) {
-  //     await addToCart(product.productId, userId);
-  //     await getCartProducts(userId);
-  //   } else {
-  //     return;
-  //   }
-  // });
-  // addToWishlistButton.addEventListener("click", async () => {
-  //   const userId = localStorage.getItem("userId");
-  //   console.log(product.productId);
-  //   if (userId) {
-  //     await addToWishlist(product.productId, userId);
-  //     await getWishlistProducts(userId);
-  //   } else {
-  //     return;
-  //   }
-  // });
+  const updateButton = cartItem.querySelector(
+    ".update-btn"
+  ) as HTMLButtonElement;
+  const deleteButton = cartItem.querySelector(
+    ".delete-btn"
+  ) as HTMLButtonElement;
+
+  updateButton.addEventListener("click", async () => {
+    const userId = localStorage.getItem("userId");
+    const newQuantity = parseInt(
+      (cartItem.querySelector("#quantity") as HTMLInputElement).value,
+      10
+    );
+
+    if (!isNaN(newQuantity) && userId) {
+      await updateCartProduct(product.productId, userId, newQuantity);
+      // Refresh the cart page
+      navigateToPage("cart");
+    } else {
+      // Handle invalid input or missing userId
+      console.error("Invalid quantity or missing userId");
+    }
+  });
+
+  deleteButton.addEventListener("click", async () => {
+    const userId = localStorage.getItem("userId");
+    console.log(product.productId);
+    if (userId) {
+      await removeFromCart(product.productId, userId);
+      navigateToPage("cart");
+    } else {
+      return;
+    }
+  });
 
   return cartItem;
 }
