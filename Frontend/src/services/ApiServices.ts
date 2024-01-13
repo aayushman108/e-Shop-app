@@ -1,4 +1,3 @@
-import axios from "axios";
 import { http } from "./HttpService";
 import { ILogin, ISignup } from "../interface";
 

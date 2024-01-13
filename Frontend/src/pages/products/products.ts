@@ -4,8 +4,9 @@ import { addToCart, addToWishlist } from "../../utils";
 
 function renderProduct(product: IProduct) {
   const productItem = document.createElement("div");
-  productItem.innerHTML = `
+  productItem.innerHTML = /* html */ `
   <h3>${product.productName}</h3>
+  <img src= "${product.imageUrl}" alt= "..." />
   <p>${product.description}</p>
   <p>Price: ${product.price}</p>
   <button class="add-to-cart-btn">

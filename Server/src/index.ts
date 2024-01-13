@@ -14,6 +14,7 @@ import Product from "./models/Product";
 import User from "./models/User";
 import Wishlist from "./models/Wishlist";
 import Cart from "./models/Cart";
+import path from "path";
 
 const app = express();
 
@@ -21,6 +22,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
+
+const projectRoot = path.resolve(__dirname, "..");
+app.use(express.static(path.join(projectRoot, "public")));
+app.use(
+  "/public/uploads",
+  express.static(path.join(projectRoot, "public", "uploads"))
+);
 
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
@@ -41,6 +49,7 @@ Cart.sync({ force: true });
 
 app.listen(serverConfig.serverPort, () => {
   console.log(
-    `Server is running at http://localhost:${serverConfig.serverPort}`
+    `Server is running at http://localhost:${serverConfig.serverPort}`,
+    `${__dirname}`
   );
 });
