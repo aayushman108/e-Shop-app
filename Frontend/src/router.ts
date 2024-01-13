@@ -67,7 +67,12 @@ export async function navigateToPage(page: string) {
     case "wishlist":
       handleNavStyle(page);
       updateUrl(page);
-      renderContent(renderWishlist());
+      try {
+        const content = await renderWishlist();
+        renderContent(content);
+      } catch (error) {
+        console.error(`Error rendering wishlist page: ${error}`);
+      }
       break;
     case "products":
       handleNavStyle(page);

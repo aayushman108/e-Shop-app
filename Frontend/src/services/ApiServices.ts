@@ -51,17 +51,6 @@ export async function addToCart(
   }
 }
 
-export async function addToWishlist(productId: string, userId: string) {
-  try {
-    const response = await http.post(`/api/cart/${userId}/${productId}`);
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error adding product to wishlist:", error);
-    throw error;
-  }
-}
-
 export async function getCartProducts(userId: string) {
   try {
     const response = await http.get(`/api/cart/${userId}`);
@@ -69,17 +58,6 @@ export async function getCartProducts(userId: string) {
     return response.data;
   } catch (error) {
     console.error("Error fetching cart products:", error);
-    throw error;
-  }
-}
-
-export async function getWishlistProducts(userId: string) {
-  try {
-    const response = await http.get(`/api/wishlist/${userId}`);
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching wishlist products:", error);
     throw error;
   }
 }
@@ -112,9 +90,31 @@ export async function updateCartProduct(
   }
 }
 
+export async function addToWishlist(productId: string, userId: string) {
+  try {
+    const response = await http.post(`/api/wishlist/${userId}/${productId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding product to wishlist:", error);
+    throw error;
+  }
+}
+
+export async function getWishlistProducts(userId: string) {
+  try {
+    const response = await http.get(`/api/wishlist/${userId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching wishlist products:", error);
+    throw error;
+  }
+}
+
 export async function removeFromWishlist(productId: string, userId: string) {
   try {
-    const response = await http.delete(`/api/cart/${userId}/${productId}`);
+    const response = await http.delete(`/api/wishlist/${userId}/${productId}`);
     console.log(response.data);
     return response.data;
   } catch (error) {

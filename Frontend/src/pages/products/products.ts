@@ -2,7 +2,6 @@ import { IProduct } from "../../interface";
 import {
   addToCart,
   addToWishlist,
-  getCartProducts,
   getProducts,
   getWishlistProducts,
 } from "../../services/ApiServices";
@@ -34,7 +33,6 @@ function renderProduct(product: IProduct) {
     console.log(product.productId);
     if (userId) {
       await addToCart(product.productId, userId);
-      await getCartProducts(userId);
     } else {
       return;
     }
