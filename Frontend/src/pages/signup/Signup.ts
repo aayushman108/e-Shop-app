@@ -2,6 +2,7 @@ import * as yup from "yup";
 import { navigateToPage } from "../../router";
 import { ISignup } from "../../interface";
 import { signup } from "../../services/ApiServices";
+import { AxiosError } from "axios";
 
 export async function renderSignup() {
   const signupPage = document.createElement("div") as HTMLDivElement;
@@ -86,11 +87,9 @@ export async function renderSignup() {
       confirmPassword: formData.get("confirmPassword") as string,
     };
 
-    console.log(formDataObject);
-
     try {
       await schema.validate(formDataObject, { abortEarly: false });
-      signup(formDataObject);
+      await signup(formDataObject);
       console.log("Form submitted successfully!");
       navigateToPage("home");
     } catch (error) {
@@ -101,6 +100,12 @@ export async function renderSignup() {
             errorField.textContent = e.message;
           }
         });
+      }
+      if (error instanceof AxiosError) {
+        const errorMessage = error.response?.data;
+        if (errorMessage) {
+          console.log(errorMessage.message);
+        }
       }
     }
   });

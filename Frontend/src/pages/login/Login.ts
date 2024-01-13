@@ -2,6 +2,7 @@ import * as yup from "yup";
 import { navigateToPage } from "../../router";
 import { ILogin } from "../../interface";
 import { login } from "../../services/ApiServices";
+import { AxiosError } from "axios";
 
 export async function renderLogin() {
   const loginPage = document.createElement("div") as HTMLDivElement;
@@ -64,10 +65,11 @@ export async function renderLogin() {
     console.log(formDataObject);
     try {
       await schema.validate(formDataObject, { abortEarly: false });
-      login(formDataObject);
+      await login(formDataObject);
       console.log("Form submitted successfully!");
       navigateToPage("home");
     } catch (error) {
+      console.log(error);
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((e) => {
           const errorField = document.getElementById(`${e.path}Error`);
@@ -75,6 +77,12 @@ export async function renderLogin() {
             errorField.textContent = e.message;
           }
         });
+      }
+      if (error instanceof AxiosError) {
+        const errorMessage = error.response?.data;
+        if (errorMessage) {
+          console.log(errorMessage.message);
+        }
       }
     }
   });

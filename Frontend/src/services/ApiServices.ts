@@ -5,7 +5,7 @@ import { ILogin, ISignup } from "../interface";
 export async function signup(formData: ISignup) {
   try {
     const response = await http.post("/api/users/signup", formData);
-    console.log(response.data);
+    //console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error signing up:", error);
@@ -16,8 +16,8 @@ export async function signup(formData: ISignup) {
 export async function login(formData: ILogin) {
   try {
     const response = await http.post("/api/users/login", formData);
-    //return response.data;
-    console.log(response.data);
+    return response.data;
+    //console.log(response.data);
   } catch (error) {
     console.error("Error logging in:", error);
     throw error;

@@ -30,6 +30,5 @@ export async function renderProducts() {
   products.forEach((product) => {
     container.appendChild(renderProduct(product));
   });
-  console.log(container);
   return container;
 }

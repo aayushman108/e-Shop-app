@@ -30,18 +30,12 @@ function renderContent(content: any) {
   }
 }
 
-// function updateUrl(page: string) {
-//   const url = `/${page}`;
-//   history.pushState({ page }, "", url);
-// }
 function updateUrl(page: string) {
   const url = `/${page}`;
 
   if (history.pushState) {
-    // Only use pushState if it's available
     history.pushState({ page }, "", url);
   } else {
-    // Fallback to setting location directly
     window.location.href = url;
   }
 }
@@ -75,7 +69,6 @@ export async function navigateToPage(page: string) {
       updateUrl(page);
       try {
         const content = await renderProducts();
-        console.log(content);
         renderContent(content);
       } catch (error) {
         console.error(`Error rendering home page: ${error}`);
@@ -87,7 +80,6 @@ export async function navigateToPage(page: string) {
       updateUrl(page);
       try {
         const content = await renderSignup();
-        console.log(content);
         renderContent(content);
       } catch (error) {
         console.error(`Error rendering Signup page: ${error}`);
@@ -99,7 +91,6 @@ export async function navigateToPage(page: string) {
       updateUrl(page);
       try {
         const content = await renderLogin();
-        console.log(content);
         renderContent(content);
       } catch (error) {
         console.error(`Error rendering Login page: ${error}`);
