@@ -5,7 +5,7 @@ export function renderHeader() {
   const header = document.createElement("header");
   header.className = "header";
   header.innerHTML = /* html */ `
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand d-lg-none" href="#">e-shop</a>
         <button

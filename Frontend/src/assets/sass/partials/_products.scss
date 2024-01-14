@@ -1,0 +1,17 @@
+.products {
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 50px 0;
+  &__filter {
+    width: 100%;
+    margin-bottom: 30px;
+    #filterForm {
+      @include d-flex(flex-start, row);
+      align-items: center;
+      gap: 15px;
+      input[type="number"] {
+        width: 150px;
+      }
+    }
+  }
+}

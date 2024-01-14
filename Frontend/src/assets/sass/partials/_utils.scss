@@ -1,0 +1,30 @@
+@mixin d-flex($justify-content, $flex-direction) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
+@mixin tablet {
+  @media screen and (max-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+// .main-container {
+//   max-width: 1450px;
+//   margin: 20px auto;
+//   border: 2px solid black;
+//   @include tablet {
+//     //padding: 0 50px;
+//   }
+//   @include mobile {
+//     //padding: 0 35px;
+//   }
+// }

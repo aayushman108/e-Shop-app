@@ -71,27 +71,36 @@ async function fetchAndRenderFilteredProducts(
 
 export async function renderProducts() {
   const container = document.createElement("div");
+  container.className = "products";
   const filterFormContainer = document.createElement("div");
+  filterFormContainer.className = "products__filter";
   filterFormContainer.innerHTML = /*html*/ `
   <form id="filterForm">
-  <label for="category">Category:</label>
-  <select id="category" name="category">
-    <option value="">All Categories</option>
-    <option value="Men Jeans">Men Jeans</option>
-    <option value="Men Shirt">Men Shirt</option>
-    <option value="Bags">Bags</option>
-    <option value="Women Clothes">Women Clothes</option>
-  </select>
+      <select id="category" name="category">
+        <option value="">All Categories</option>
+        <option value="Men Jeans">Men Jeans</option>
+        <option value="Men Shirt">Men Shirt</option>
+        <option value="Bags">Bags</option>
+        <option value="Women Clothes">Women Clothes</option>
+      </select>
 
-  <label for="minPrice">Min Price:</label>
-  <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
+      <input
+        type="number"
+        id="minPrice"
+        name="minPrice"
+        placeholder="Min Price"
+      />
 
-  <label for="maxPrice">Max Price:</label>
-  <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price">
+      <input
+        type="number"
+        id="maxPrice"
+        name="maxPrice"
+        placeholder="Max Price"
+      />
 
-  <button type="button" class="apply-filter">Apply Filters</button>
-  <button type="button" class="reset-filter">Reset Filters</button>
-</form>
+      <button type="button" class="apply-filter">Apply Filters</button>
+      <button type="button" class="reset-filter">Reset Filters</button>
+    </form>
   `;
 
   const applyFiltersButton = filterFormContainer.querySelector(
