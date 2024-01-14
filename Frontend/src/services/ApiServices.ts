@@ -23,9 +23,13 @@ export async function login(formData: ILogin) {
   }
 }
 
-export async function getProducts() {
+export async function getFilteredProducts(filters: Record<string, string>) {
   try {
-    const response = await http.get("/api/products/");
+    console.log(new URLSearchParams(filters));
+
+    const response = await http.get(
+      `/api/products?${new URLSearchParams(filters)}`
+    );
     console.log(response.data);
     return response.data;
   } catch (error) {

@@ -30,12 +30,49 @@ const ProductService = {
     }
   },
 
-  getProducts: async (page: number, pageSize: number) => {
+  getProducts: async (
+    page: number,
+    pageSize: number,
+    queryParams: { category: string; minPrice: string; maxPrice: string }
+  ) => {
     const offset = calculateOffset({ page, pageSize });
+
+    const { category, minPrice, maxPrice } = queryParams;
+    console.log(queryParams);
+
+    const where: {
+      [key: string]: any;
+      category?: string;
+      price?: {
+        [key: string]: number | undefined;
+      };
+    } = {};
+
+    // Check if category is present and is a valid option
+    const validCategories = ["Men Jeans", "Men Shirt", "Bags", "Women Clothes"];
+    if (category && validCategories.includes(category)) {
+      where.category = category;
+    }
+
+    // Check if minPrice is present and a valid number
+    if (minPrice && !isNaN(parseFloat(minPrice))) {
+      where.price = {
+        [Op.gte]: parseFloat(minPrice),
+      };
+    }
+
+    // Check if maxPrice is present and a valid number
+    if (maxPrice && !isNaN(parseFloat(maxPrice))) {
+      where.price = {
+        ...where.price,
+        [Op.lte]: parseFloat(maxPrice),
+      };
+    }
 
     const products = await Product.findAll({
       offset,
       limit: pageSize,
+      where,
     });
 
     if (products.length === 0) {
