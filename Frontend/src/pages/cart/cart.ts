@@ -8,16 +8,22 @@ import {
 
 function renderCartProduct(product: IProduct, quantity: number) {
   const cartItem = document.createElement("div");
+  cartItem.className = "cart__item";
   cartItem.innerHTML = /* html */ `
-  <h3>${product.productName}</h3>
-  <img src= "${product.imageUrl}" alt= "..." />
-  <p>Price: ${product.price}</p>
-  <p>Quantity: ${quantity}</p>
-  <p>Total price: ${product.price * quantity} </p>
-  <label for="quantity">Quantity:</label>
-  <input type="number" id="quantity" value="${quantity}" min="1">
-  <button class="update-btn">Update</button>
-  <button class="delete-btn">Delete</button>
+  <div class= "cart__item-image">
+    <img src= "${product.imageUrl}" alt= "..." />
+  </div>
+  <div class= "cart__item-description">
+    <p>${product.productName}</p>
+    <p>${quantity}</p>
+  </div>
+  <div class="cart__item-price">
+    <p>$${product.price}</p>
+    <input type="number" id="quantity" value="${quantity}" min="1">
+    <p>$${product.price * quantity} </p>
+  </div>
+  <button class="update-btn"><i class="bi bi-arrow-clockwise"></i></button>
+  <button class="delete-btn"><i class="bi bi-trash3"></i></button>
 `;
 
   const updateButton = cartItem.querySelector(
@@ -59,6 +65,7 @@ function renderCartProduct(product: IProduct, quantity: number) {
 }
 export async function renderCart() {
   const container = document.createElement("div");
+  container.className = "cart";
 
   const userId = localStorage.getItem("userId");
 
