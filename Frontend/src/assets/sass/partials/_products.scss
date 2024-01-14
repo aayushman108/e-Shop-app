@@ -15,13 +15,13 @@
     }
   }
   &__container {
-    border-top: 1px solid black;
     border-left: 1px solid black;
     .products-list {
       width: 100%;
       @include d-flex(flex-start, row);
       &__item {
         position: relative;
+        border-top: 1px solid black;
         border-right: 1px solid black;
         border-bottom: 1px solid black;
         height: calc(9 / 22 * 100vw);
