@@ -1,4 +1,4 @@
-.cart {
+.wishlist {
   max-width: 1450px;
   margin: 0 auto;
   padding: 50px 0;
@@ -39,6 +39,7 @@
       }
       > :nth-child(2) {
         font-size: 1.2rem;
+        color: orangered;
         @include tablet {
           font-size: 1.1rem;
         }
@@ -47,22 +48,15 @@
         }
       }
     }
-    &-price {
-      @include d-flex(flex-start, column);
-      align-items: center;
-      p {
-        margin: 0;
-      }
-      input[type="number"] {
-        width: 75px;
-      }
-    }
-    button {
+    .delete-btn {
       border: none;
       width: 60px;
       height: 60px;
       padding: 0;
       border-radius: 50%;
+      &:hover {
+        background-color: red;
+      }
       @include tablet {
         width: 50px;
         height: 50px;
@@ -76,11 +70,6 @@
         }
         @include mobile {
         }
-      }
-    }
-    .delete-btn {
-      &:hover {
-        background-color: red;
       }
     }
   }

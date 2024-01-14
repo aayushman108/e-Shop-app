@@ -8,14 +8,17 @@ import {
 
 function renderWishlistProduct(product: IProduct) {
   const wishlistItem = document.createElement("div");
+  wishlistItem.className = "wishlist__item";
   wishlistItem.innerHTML = /* html */ `
-  <h3>${product.productName}</h3>
-  <img src= "${product.imageUrl}" alt= "..." />
-  <p>Price: ${product.price}</p>
-  <button class="add-to-cart-btn">
-    Add to Cart
-  </button>
-  <button class="delete-btn">Delete</button>
+  <div class="wishlist__item-image">
+    <img src= "${product.imageUrl}" alt= "..." />
+  </div>
+  <div class="wishlist__item-description">
+    <p>${product.productName}</p>
+    <p>$${product.price}</p>
+  </div>
+  <button class="add-to-cart-btn"><i class="bi bi-cart4"></i>&nbsp;&nbsp;Add to Cart</button>
+  <button class="delete-btn"><i class="bi bi-trash3"></i></button>
 `;
 
   const addToCartButton = wishlistItem.querySelector(
@@ -48,8 +51,10 @@ function renderWishlistProduct(product: IProduct) {
 
   return wishlistItem;
 }
+
 export async function renderWishlist() {
   const container = document.createElement("div");
+  container.className = "wishlist";
 
   const userId = localStorage.getItem("userId");
 
@@ -61,7 +66,6 @@ export async function renderWishlist() {
   wishlistPageDetails.forEach((wishlist) => {
     const { Product } = wishlist;
     container.appendChild(renderWishlistProduct(Product));
-    console.log(wishlist);
   });
 
   return container;
