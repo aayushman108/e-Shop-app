@@ -7,17 +7,26 @@ import {
 
 function createProductElement(product: IProduct) {
   const productItem = document.createElement("div");
+  productItem.className = "products-list__item";
   productItem.innerHTML = /* html */ `
-  <h3>${product.productName}</h3>
-  <img src= "${product.imageUrl}" alt= "..." />
-  <p>${product.description}</p>
-  <p>Price: ${product.price}</p>
-  <button class="add-to-cart-btn">
-    Add to Cart
-  </button>
-  <button class="add-to-wishlist-btn">
-    Add to Wishlist
-  </button>
+  <div class="products-list__item-image">
+    <img src= "${product.imageUrl}" alt= "..." />
+  </div>
+  <div class="products-list__item-description">
+    <p>${product.productName}</p>
+    <p>$${product.price}</p>
+  </div>
+  <div class="products-list__item-links">
+    <button class="add-to-cart-btn">
+      <i class="bi bi-cart4"></i>
+    </button>
+    <button class="add-to-wishlist-btn">
+      <i class="bi bi-bag-heart"></i>
+    </button>
+    <button class="see-product-detail">
+      <i class="bi bi-eye"></i>
+    </button>
+  </div>
 `;
   const addToCartButton = productItem.querySelector(
     ".add-to-cart-btn"
@@ -57,6 +66,7 @@ async function fetchAndRenderFilteredProducts(
     const productsPageProducts = await getFilteredProducts(filters);
     const products: IProduct[] = productsPageProducts.products;
     const productsList = document.createElement("div");
+    productsList.className = "products-list";
 
     products.forEach((product) => {
       productsList.appendChild(createProductElement(product));
@@ -111,6 +121,7 @@ export async function renderProducts() {
   ) as HTMLButtonElement;
 
   const productsContainer = document.createElement("div");
+  productsContainer.className = "products__container";
 
   const filterForm = filterFormContainer.querySelector(
     "#filterForm"
