@@ -41,6 +41,9 @@ function createProductElement(product: IProduct) {
   const goToProductDetailsButton = productItem.querySelector(
     ".go-to-product-details-btn"
   ) as HTMLButtonElement;
+  const goToProductDetailsImg = productItem.querySelector(
+    ".products-list__item-image"
+  ) as HTMLDivElement;
 
   addToCartButton.addEventListener("click", async () => {
     try {
@@ -75,6 +78,17 @@ function createProductElement(product: IProduct) {
   });
 
   goToProductDetailsButton.addEventListener("click", async () => {
+    try {
+      const productId = product.productId;
+      const productDetails = await getSingleProduct(productId);
+      const encodedProduct = encodeURIComponent(JSON.stringify(productDetails));
+      navigateToPage("singleProduct", encodedProduct);
+    } catch (error) {
+      showErrorToast("Error fetching product details");
+    }
+  });
+
+  goToProductDetailsImg.addEventListener("click", async () => {
     try {
       const productId = product.productId;
       const productDetails = await getSingleProduct(productId);
