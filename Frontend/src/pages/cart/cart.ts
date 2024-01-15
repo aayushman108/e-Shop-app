@@ -1,7 +1,9 @@
+import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 import { ICartProduct, IProduct } from "../../interface";
 import { navigateToPage } from "../../router";
 import {
   getCartProducts,
+  getSingleProduct,
   removeFromCart,
   updateCartProduct,
 } from "../../services/ApiServices";
@@ -29,40 +31,61 @@ function renderCartProduct(product: IProduct, quantity: number) {
   const updateButton = cartItem.querySelector(
     ".update-btn"
   ) as HTMLButtonElement;
+  const goToProductDetailsImg = cartItem.querySelector(
+    ".cart__item-image"
+  ) as HTMLDivElement;
   const deleteButton = cartItem.querySelector(
     ".delete-btn"
   ) as HTMLButtonElement;
 
   updateButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    const newQuantity = parseInt(
-      (cartItem.querySelector("#quantity") as HTMLInputElement).value,
-      10
-    );
+    try {
+      const userId = localStorage.getItem("userId");
+      const newQuantity = parseInt(
+        (cartItem.querySelector("#quantity") as HTMLInputElement).value,
+        10
+      );
 
-    if (!isNaN(newQuantity) && userId) {
-      await updateCartProduct(product.productId, userId, newQuantity);
-      // Refresh the cart page
-      navigateToPage("cart");
-    } else {
-      // Handle invalid input or missing userId
-      console.error("Invalid quantity or missing userId");
+      if (!isNaN(newQuantity) && userId) {
+        await updateCartProduct(product.productId, userId, newQuantity);
+        navigateToPage("cart");
+      } else {
+        showErrorToast("Invalid quantity or missing userId");
+      }
+    } catch (error) {
+      showErrorToast("Error updating cart product");
     }
   });
 
   deleteButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    console.log(product.productId);
-    if (userId) {
-      await removeFromCart(product.productId, userId);
-      navigateToPage("cart");
-    } else {
-      return;
+    try {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await removeFromCart(product.productId, userId);
+        showSuccessToast("Product removed from cart");
+        navigateToPage("cart");
+      } else {
+        navigateToPage("login");
+      }
+    } catch (error) {
+      showErrorToast("Error removing from cart");
+    }
+  });
+
+  goToProductDetailsImg.addEventListener("click", async () => {
+    try {
+      const productId = product.productId;
+      const productDetails = await getSingleProduct(productId);
+      const encodedProduct = encodeURIComponent(JSON.stringify(productDetails));
+      navigateToPage("singleProduct", encodedProduct);
+    } catch (error) {
+      showErrorToast("Error fetching product details");
     }
   });
 
   return cartItem;
 }
+
 export async function renderCart() {
   const container = document.createElement("div");
   container.className = "cart";
