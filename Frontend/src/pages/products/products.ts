@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 import { IProduct } from "../../interface";
 import { navigateToPage } from "../../router";
 import {
@@ -45,12 +47,14 @@ function createProductElement(product: IProduct) {
       const userId = localStorage.getItem("userId");
       if (userId) {
         await addToCart(product.productId, userId);
-        console.log("Product added to cart successfully!");
+        showSuccessToast("Product added to cart successfully!");
       } else {
-        console.error("User ID not found.");
+        showErrorToast("User ID not found.");
       }
     } catch (error) {
-      console.error("Error adding product to cart:", error);
+      if (error instanceof AxiosError) {
+        showErrorToast("Product already in cart");
+      }
     }
   });
 
@@ -59,12 +63,14 @@ function createProductElement(product: IProduct) {
       const userId = localStorage.getItem("userId");
       if (userId) {
         await addToWishlist(product.productId, userId);
-        console.log("Product added to wishlist successfully!");
+        showSuccessToast("Product added to wishlist successfully!");
       } else {
-        console.error("User ID not found.");
+        showErrorToast("User ID not found.");
       }
     } catch (error) {
-      console.error("Error adding product to wishlist:", error);
+      if (error instanceof AxiosError) {
+        showErrorToast("Product already in wishlist");
+      }
     }
   });
 
@@ -72,11 +78,10 @@ function createProductElement(product: IProduct) {
     try {
       const productId = product.productId;
       const productDetails = await getSingleProduct(productId);
-      console.log(productDetails);
       const encodedProduct = encodeURIComponent(JSON.stringify(productDetails));
       navigateToPage("singleProduct", encodedProduct);
     } catch (error) {
-      console.error("Error fetching product details:", error);
+      showErrorToast("Error fetching product details");
     }
   });
 
@@ -100,7 +105,7 @@ async function fetchAndRenderFilteredProducts(
     productsContainer.innerHTML = "";
     productsContainer.appendChild(productsList);
   } catch (error) {
-    console.error("Error fetching or rendering filtered products:", error);
+    showErrorToast("Error fetching or rendering filtered products");
   }
 }
 
@@ -164,7 +169,7 @@ export async function renderProducts() {
 
       await fetchAndRenderFilteredProducts(filters, productsContainer);
     } catch (error) {
-      console.error("Error applying filters:", error);
+      showErrorToast("Error applying filters");
     }
   });
 
@@ -172,7 +177,7 @@ export async function renderProducts() {
     try {
       await fetchAndRenderFilteredProducts({}, productsContainer);
     } catch (error) {
-      console.error("Error resetting filters:", error);
+      showErrorToast("Error resetting filters");
     }
   });
 
