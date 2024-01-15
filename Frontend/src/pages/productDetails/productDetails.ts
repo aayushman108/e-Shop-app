@@ -1,4 +1,6 @@
+import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 import { IProduct } from "../../interface";
+import { navigateToPage } from "../../router";
 import { addToCart, addToWishlist } from "../../services/ApiServices";
 
 function renderProduct(product: IProduct) {
@@ -39,22 +41,31 @@ function renderProduct(product: IProduct) {
   ) as HTMLInputElement;
 
   addToCartButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    const quantity: number = quantityInput.valueAsNumber;
-    console.log(product.productId);
-    if (userId) {
-      await addToCart(product.productId, userId, quantity);
-    } else {
-      return;
+    try {
+      const userId = localStorage.getItem("userId");
+      const quantity: number = quantityInput.valueAsNumber;
+      if (userId) {
+        await addToCart(product.productId, userId, quantity);
+        showSuccessToast("Product added to cart successfully");
+      } else {
+        navigateToPage("login");
+      }
+    } catch (error) {
+      showErrorToast("Error adding product to cart");
     }
   });
+
   addToWishlistButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    console.log(product.productId);
-    if (userId) {
-      await addToWishlist(product.productId, userId);
-    } else {
-      return;
+    try {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await addToWishlist(product.productId, userId);
+        showSuccessToast("Product add to wishlist successfully");
+      } else {
+        navigateToPage("login");
+      }
+    } catch (error) {
+      showErrorToast("Error adding product to wishlist");
     }
   });
 
@@ -72,11 +83,10 @@ export async function renderSingleProduct() {
     try {
       const decodeProduct = JSON.parse(decodeURIComponent(searchParam));
       const product: IProduct = decodeProduct;
-      console.log(product);
       container.appendChild(renderProduct(product));
       return container;
     } catch (error) {
-      console.error("Error parsing search results:", error);
+      showErrorToast("Error parsing search results");
       return null;
     }
   }

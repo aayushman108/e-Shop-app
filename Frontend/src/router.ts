@@ -7,6 +7,7 @@ import { renderSignup } from "./pages/signup/Signup";
 import { renderLogin } from "./pages/login/Login";
 import { renderSearches } from "./pages/search/search";
 import { renderSingleProduct } from "./pages/productDetails/ProductDetails";
+import { showErrorToast } from "./components/Toasts";
 
 export function initializeApp() {
   renderHeader();
@@ -52,7 +53,7 @@ export async function navigateToPage(page: string, data?: any) {
         const content = await renderHome();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering home page: ${error}`);
+        showErrorToast(`Error rendering home page: ${error}`);
       }
       break;
     case "cart":
@@ -62,7 +63,7 @@ export async function navigateToPage(page: string, data?: any) {
         const content = await renderCart();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering cart page: ${error}`);
+        showErrorToast(`Error rendering cart page: ${error}`);
       }
       break;
     case "wishlist":
@@ -72,7 +73,7 @@ export async function navigateToPage(page: string, data?: any) {
         const content = await renderWishlist();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering wishlist page: ${error}`);
+        showErrorToast(`Error rendering wishlist page: ${error}`);
       }
       break;
     case "products":
@@ -82,7 +83,7 @@ export async function navigateToPage(page: string, data?: any) {
         const content = await renderProducts();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering products page: ${error}`);
+        showErrorToast(`Error rendering products page: ${error}`);
       }
       break;
     case "singleProduct":
@@ -92,7 +93,7 @@ export async function navigateToPage(page: string, data?: any) {
         const content = await renderSingleProduct();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering product details page: ${error}`);
+        showErrorToast(`Error rendering product details page: ${error}`);
       }
       break;
     case "signup":
@@ -102,7 +103,7 @@ export async function navigateToPage(page: string, data?: any) {
         const content = await renderSignup();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering Signup page: ${error}`);
+        showErrorToast(`Error rendering Signup page: ${error}`);
       }
       break;
     case "login":
@@ -112,7 +113,7 @@ export async function navigateToPage(page: string, data?: any) {
         const content = await renderLogin();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering Login page: ${error}`);
+        showErrorToast(`Error rendering Login page: ${error}`);
       }
       break;
     case "search":
@@ -122,11 +123,11 @@ export async function navigateToPage(page: string, data?: any) {
         const content = await renderSearches();
         renderContent(content);
       } catch (error) {
-        console.error(`Error rendering search page: ${error}`);
+        showErrorToast(`Error rendering search page: ${error}`);
       }
       break;
     default:
-      console.error(`404 error`);
+      showErrorToast(`404 error`);
   }
 }
 
