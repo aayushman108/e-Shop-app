@@ -8,6 +8,7 @@ import { renderLogin } from "./pages/login/Login";
 import { renderSearches } from "./pages/search/search";
 import { renderSingleProduct } from "./pages/productDetails/ProductDetails";
 import { showErrorToast } from "./components/Toasts";
+import { renderCheckout } from "./pages/checkout/Checkout";
 
 export function initializeApp() {
   renderHeader();
@@ -74,6 +75,16 @@ export async function navigateToPage(page: string, data?: any) {
         renderContent(content);
       } catch (error) {
         showErrorToast(`Error rendering wishlist page: ${error}`);
+      }
+      break;
+    case "checkout":
+      handleNavStyle(page);
+      updateUrl(page);
+      try {
+        const content = await renderCheckout();
+        renderContent(content);
+      } catch (error) {
+        showErrorToast(`Error rendering checkout page: ${error}`);
       }
       break;
     case "products":
