@@ -1,5 +1,12 @@
+import { AxiosError } from "axios";
+import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 import { IProduct } from "../../interface";
-import { addToCart, addToWishlist } from "../../services/ApiServices";
+import {
+  addToCart,
+  addToWishlist,
+  getSingleProduct,
+} from "../../services/ApiServices";
+import { navigateToPage } from "../../router";
 
 function renderProduct(product: IProduct) {
   const productItem = document.createElement("div");
@@ -19,7 +26,7 @@ function renderProduct(product: IProduct) {
     <button class="add-to-wishlist-btn">
       <i class="bi bi-bag-heart"></i>
     </button>
-    <button class="see-product-detail">
+    <button class="go-to-product-details-btn">
       <i class="bi bi-eye"></i>
     </button>
   </div>
@@ -30,27 +37,65 @@ function renderProduct(product: IProduct) {
   const addToWishlistButton = productItem.querySelector(
     ".add-to-wishlist-btn"
   ) as HTMLButtonElement;
-  console.log(addToCartButton);
+  const goToProductDetailsButton = productItem.querySelector(
+    ".go-to-product-details-btn"
+  ) as HTMLButtonElement;
+  const goToProductDetailsImg = productItem.querySelector(
+    ".search__item-image"
+  ) as HTMLDivElement;
 
   addToCartButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    console.log(product.productId);
-    if (userId) {
-      await addToCart(product.productId, userId);
-    } else {
-      return;
+    try {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await addToCart(product.productId, userId);
+        showSuccessToast("Product added to cart successfully!");
+      } else {
+        showErrorToast("User ID not found.");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        showErrorToast("Product already in cart");
+      }
     }
   });
   addToWishlistButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    console.log(product.productId);
-    if (userId) {
-      await addToWishlist(product.productId, userId);
-    } else {
-      return;
+    try {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await addToWishlist(product.productId, userId);
+        showSuccessToast("Product added to wishlist successfully!");
+      } else {
+        showErrorToast("User ID not found.");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        showErrorToast("Product already in wishlist");
+      }
+    }
+  });
+  goToProductDetailsButton.addEventListener("click", async () => {
+    try {
+      const productId = product.productId;
+      const productDetails = await getSingleProduct(productId);
+      const encodedProduct = encodeURIComponent(JSON.stringify(productDetails));
+      navigateToPage("singleProduct", encodedProduct);
+    } catch (error) {
+      showErrorToast("Error fetching product details");
+    }
+  });
+  goToProductDetailsImg.addEventListener("click", async () => {
+    try {
+      const productId = product.productId;
+      const productDetails = await getSingleProduct(productId);
+      const encodedProduct = encodeURIComponent(JSON.stringify(productDetails));
+      navigateToPage("singleProduct", encodedProduct);
+    } catch (error) {
+      showErrorToast("Error fetching product details");
     }
   });
 
+  console.log(productItem);
   return productItem;
 }
 export async function renderSearches() {
@@ -63,7 +108,6 @@ export async function renderSearches() {
   if (searchParam) {
     try {
       const searchResults = JSON.parse(decodeURIComponent(searchParam));
-      console.log(searchResults);
       const products: IProduct[] = searchResults;
       products.forEach((product) => {
         container.appendChild(renderProduct(product));

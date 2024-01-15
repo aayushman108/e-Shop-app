@@ -3,9 +3,12 @@ import { navigateToPage } from "../../router";
 import { ISignup } from "../../interface";
 import { signup } from "../../services/ApiServices";
 import { AxiosError } from "axios";
+import { showErrorToast, showSuccessToast } from "../../components/Toasts";
+import { signupSchema } from "../../schema";
 
 export async function renderSignup() {
   const signupPage = document.createElement("div") as HTMLDivElement;
+  signupPage.className = "signup";
   signupPage.innerHTML = /* html */ `
       <div class="container mt-5">
         <div class="row justify-content-center">
@@ -60,26 +63,9 @@ export async function renderSignup() {
   resetErrorOnInput("password", "passwordError");
   resetErrorOnInput("confirmPassword", "confirmPasswordError");
 
-  const schema = yup.object().shape({
-    username: yup.string().required("Username is required"),
-    email: yup.string().email("Invalid email").required("Email is required"),
-    password: yup
-      .string()
-      .required("Password is required")
-      .matches(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "Password must be at least 8 characters, with at least one capital letter, one special character, and one number"
-      ),
-    confirmPassword: yup
-      .string()
-      .required("Confirm Password is required")
-      .oneOf([yup.ref("password"), ""], "Passwords must match"),
-  });
-
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
-    console.log(formData);
     const formDataObject: ISignup = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
@@ -88,9 +74,9 @@ export async function renderSignup() {
     };
 
     try {
-      await schema.validate(formDataObject, { abortEarly: false });
+      await signupSchema.validate(formDataObject, { abortEarly: false });
       await signup(formDataObject);
-      console.log("Form submitted successfully!");
+      showSuccessToast("Logged in successfully");
       navigateToPage("home");
     } catch (error) {
       if (error instanceof yup.ValidationError) {
@@ -103,8 +89,13 @@ export async function renderSignup() {
       }
       if (error instanceof AxiosError) {
         const errorMessage = error.response?.data;
-        if (errorMessage) {
-          console.log(errorMessage.message);
+
+        if (errorMessage && errorMessage.message) {
+          showErrorToast(`${errorMessage.message}`);
+        } else if (errorMessage && errorMessage.error) {
+          showErrorToast(`${errorMessage.error}`);
+        } else {
+          showErrorToast("An unknown error occurred");
         }
       }
     }

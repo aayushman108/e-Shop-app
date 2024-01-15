@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 import { IProduct } from "../../interface";
 import { navigateToPage } from "../../router";
@@ -51,7 +52,9 @@ function renderProduct(product: IProduct) {
         navigateToPage("login");
       }
     } catch (error) {
-      showErrorToast("Error adding product to cart");
+      if (error instanceof AxiosError) {
+        showErrorToast("Product already in cart");
+      }
     }
   });
 
@@ -65,7 +68,9 @@ function renderProduct(product: IProduct) {
         navigateToPage("login");
       }
     } catch (error) {
-      showErrorToast("Error adding product to wishlist");
+      if (error instanceof AxiosError) {
+        showErrorToast("Product already in wishlist");
+      }
     }
   });
 
