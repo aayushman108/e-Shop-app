@@ -76,7 +76,7 @@ export async function renderSignup() {
     try {
       await signupSchema.validate(formDataObject, { abortEarly: false });
       await signup(formDataObject);
-      showSuccessToast("Logged in successfully");
+      showSuccessToast("Logged in successfully!");
       navigateToPage("home");
     } catch (error) {
       if (error instanceof yup.ValidationError) {

@@ -3,9 +3,12 @@ import { navigateToPage } from "../../router";
 import { ILogin } from "../../interface";
 import { login } from "../../services/ApiServices";
 import { AxiosError } from "axios";
+import { loginSchema } from "../../schema";
+import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 
 export async function renderLogin() {
   const loginPage = document.createElement("div") as HTMLDivElement;
+  loginPage.className = "login";
   loginPage.innerHTML = /* html */ `
       <div class="container mt-5">
         <div class="row justify-content-center">
@@ -45,16 +48,6 @@ export async function renderLogin() {
   resetErrorOnInput("email", "emailError");
   resetErrorOnInput("password", "passwordError");
 
-  const schema = yup.object().shape({
-    email: yup.string().email("Invalid email").required("Email is required"),
-    password: yup
-      .string()
-      .required("Password is required")
-      .matches(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "Password must be at least 8 characters, with at least one capital letter, one special character, and one number"
-      ),
-  });
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
@@ -62,16 +55,13 @@ export async function renderLogin() {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };
-    console.log(formDataObject);
     try {
-      await schema.validate(formDataObject, { abortEarly: false });
+      await loginSchema.validate(formDataObject, { abortEarly: false });
       const user = await login(formDataObject);
       localStorage.setItem("userId", user.user.userId);
-      console.log(user.user.userId);
-      console.log("Form submitted successfully!");
+      showSuccessToast("Logged in successfully!");
       navigateToPage("home");
     } catch (error) {
-      console.log(error);
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((e) => {
           const errorField = document.getElementById(`${e.path}Error`);
@@ -82,8 +72,13 @@ export async function renderLogin() {
       }
       if (error instanceof AxiosError) {
         const errorMessage = error.response?.data;
-        if (errorMessage) {
-          console.log(errorMessage.message);
+
+        if (errorMessage && errorMessage.message) {
+          showErrorToast(`${errorMessage.message}`);
+        } else if (errorMessage && errorMessage.error) {
+          showErrorToast(`${errorMessage.error}`);
+        } else {
+          showErrorToast("An unknown error occurred");
         }
       }
     }
