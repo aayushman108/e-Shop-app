@@ -1,6 +1,7 @@
 import HttpStatus from "http-status-codes";
 import { NextFunction, Request, Response } from "express";
 import AuthService from "../services/AuthService";
+import User from "../models/User";
 
 const AuthController = {
   signup: async (req: Request, res: Response, next: NextFunction) => {
@@ -37,6 +38,21 @@ const AuthController = {
         accessToken,
         refreshToken,
       });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  logout: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as Request & { user: User }).user.userId;
+
+      const { refreshToken } = req.body;
+
+      // Call the logout method from AuthService
+      await AuthService.logout(userId, refreshToken);
+
+      return res.json({ message: "Logout successful" });
     } catch (error) {
       next(error);
     }

@@ -35,6 +35,8 @@ export function renderHeader() {
                   <li><a class="dropdown-item nav-item__link" id="login" href="#">Login</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item nav-item__link" id="signup" href="#">Signup</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" id="logout" href="#">Signup</a></li>
                 </ul>
               </li>
               <li class="nav-item">

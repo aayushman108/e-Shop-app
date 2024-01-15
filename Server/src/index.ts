@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import path from "path";
 import { sequelize } from "./config/database";
 import { serverConfig } from "./config/config";
 import { genericErrorHandler, notFoundError } from "./middlewares/ErrorHandler";
@@ -10,11 +11,12 @@ import productRoutes from "./routes/ProductsRoutes";
 import wishlistRoutes from "./routes/WishlistRoutes";
 import cartRoutes from "./routes/CartRoutes";
 import homeRoutes from "./routes/HomeRoute";
+//models
 import Product from "./models/Product";
 import User from "./models/User";
 import Wishlist from "./models/Wishlist";
 import Cart from "./models/Cart";
-import path from "path";
+import BlacklistToken from "./models/BlacklistToken";
 
 const app = express();
 
@@ -44,6 +46,7 @@ Product.sync({ force: false });
 User.sync({ force: false });
 Wishlist.sync({ force: false });
 Cart.sync({ force: false });
+BlacklistToken.sync({ force: false });
 
 //sequelize.sync();
 

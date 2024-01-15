@@ -5,6 +5,7 @@ import { serverConfig } from "../config/config";
 import { ISignup } from "../interface/Signup";
 import { ILogin } from "../interface/Login";
 import BadRequestError from "../error/BadRequestError";
+import BlacklistToken from "../models/BlacklistToken";
 
 const { accessTokenSecret, refreshTokenSecret } = serverConfig.jwt;
 
@@ -66,8 +67,44 @@ const AuthService = {
     return { user, ...tokenPair };
   },
 
+  logout: async (userId: string, refreshToken: string) => {
+    try {
+      const isRefreshTokenValid = await AuthService.isRefreshTokenValid(
+        refreshToken
+      );
+
+      await BlacklistToken.create({ userId, token: refreshToken });
+
+      if (!isRefreshTokenValid) {
+        return { message: "Logout successful" };
+      }
+
+      return { message: "Logout successful" };
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  isRefreshTokenValid: async (refreshToken: string) => {
+    const tokenExists = await BlacklistToken.findOne({
+      where: {
+        token: refreshToken,
+      },
+    });
+
+    return !tokenExists;
+  },
+
   refresh: async (refreshToken: string) => {
     try {
+      // Verify if the refresh token is blacklisted
+      const isRefreshTokenValid = await AuthService.isRefreshTokenValid(
+        refreshToken
+      );
+
+      if (!isRefreshTokenValid) {
+        throw new BadRequestError("Invalid refresh token");
+      }
       // Verify the refresh token
       const decoded: any = jwt.verify(refreshToken, refreshTokenSecret);
 
