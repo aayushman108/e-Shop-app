@@ -65,7 +65,7 @@ const ProductController = {
 
   getProductById: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const productId = parseInt(req.params.productId, 10);
+      const productId = req.params.productId;
       const product = await ProductService.getProductById(productId);
       res.json(product);
     } catch (error) {

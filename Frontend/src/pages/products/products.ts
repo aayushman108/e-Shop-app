@@ -1,8 +1,10 @@
 import { IProduct } from "../../interface";
+import { navigateToPage } from "../../router";
 import {
   addToCart,
   addToWishlist,
   getFilteredProducts,
+  getSingleProduct,
 } from "../../services/ApiServices";
 
 function createProductElement(product: IProduct) {
@@ -23,7 +25,7 @@ function createProductElement(product: IProduct) {
     <button class="add-to-wishlist-btn">
       <i class="bi bi-bag-heart"></i>
     </button>
-    <button class="see-product-detail">
+    <button class="go-to-product-details-btn">
       <i class="bi bi-eye"></i>
     </button>
   </div>
@@ -34,7 +36,9 @@ function createProductElement(product: IProduct) {
   const addToWishlistButton = productItem.querySelector(
     ".add-to-wishlist-btn"
   ) as HTMLButtonElement;
-  console.log(addToCartButton);
+  const goToProductDetailsButton = productItem.querySelector(
+    ".go-to-product-details-btn"
+  ) as HTMLButtonElement;
 
   addToCartButton.addEventListener("click", async () => {
     const userId = localStorage.getItem("userId");
@@ -52,6 +56,17 @@ function createProductElement(product: IProduct) {
       await addToWishlist(product.productId, userId);
     } else {
       return;
+    }
+  });
+  goToProductDetailsButton.addEventListener("click", async () => {
+    const productId = product.productId;
+    try {
+      const product = await getSingleProduct(productId);
+      console.log(product);
+      const encodedProduct = encodeURIComponent(JSON.stringify(product));
+      navigateToPage("singleProduct", encodedProduct);
+    } catch (error) {
+      console.log(error);
     }
   });
 

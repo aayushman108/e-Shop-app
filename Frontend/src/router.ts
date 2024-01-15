@@ -6,7 +6,7 @@ import { renderProducts } from "./pages/products/Products";
 import { renderSignup } from "./pages/signup/Signup";
 import { renderLogin } from "./pages/login/Login";
 import { renderSearches } from "./pages/search/search";
-// import { renderSingleProduct } from "./pages/productDetails/ProductDetails";
+import { renderSingleProduct } from "./pages/productDetails/ProductDetails";
 
 export function initializeApp() {
   renderHeader();
@@ -83,6 +83,16 @@ export async function navigateToPage(page: string, data?: any) {
         renderContent(content);
       } catch (error) {
         console.error(`Error rendering products page: ${error}`);
+      }
+      break;
+    case "singleProduct":
+      const productUrl = `/product?query=${data}`;
+      history.pushState({ path: productUrl }, "", productUrl);
+      try {
+        const content = await renderSingleProduct();
+        renderContent(content);
+      } catch (error) {
+        console.error(`Error rendering product details page: ${error}`);
       }
       break;
     case "signup":

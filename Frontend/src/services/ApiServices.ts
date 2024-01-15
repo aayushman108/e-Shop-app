@@ -137,3 +137,14 @@ export async function getSearchResult(query: string) {
     throw error;
   }
 }
+
+export async function getSingleProduct(productId: string) {
+  try {
+    const response = await http.get(`/api/products/${productId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching single product:", error);
+    throw error;
+  }
+}

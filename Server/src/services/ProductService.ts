@@ -92,7 +92,7 @@ const ProductService = {
     return productCount;
   },
 
-  getProductById: async (productId: number) => {
+  getProductById: async (productId: string) => {
     const singleProduct = await Product.findByPk(productId);
 
     if (!singleProduct) {

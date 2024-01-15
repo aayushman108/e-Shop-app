@@ -1,0 +1,21 @@
+.product {
+  padding: 50px 0;
+  &__container {
+    &-image {
+      img {
+        width: 95%;
+        height: auto;
+      }
+    }
+    &-details {
+      padding: 2em 4em;
+      @include tablet {
+        padding: 2em 1em;
+      }
+      .price {
+        color: orangered;
+        font-weight: 600;
+      }
+    }
+  }
+}

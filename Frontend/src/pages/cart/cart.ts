@@ -18,9 +18,9 @@ function renderCartProduct(product: IProduct, quantity: number) {
     <p>${quantity}</p>
   </div>
   <div class="cart__item-price">
-    <p>$${product.price}</p>
+    <p>$${product.price.toFixed(2)}</p>
     <input type="number" id="quantity" value="${quantity}" min="1">
-    <p>$${product.price * quantity} </p>
+    <p>$${(product.price * quantity).toFixed(2)} </p>
   </div>
   <button class="update-btn"><i class="bi bi-arrow-clockwise"></i></button>
   <button class="delete-btn"><i class="bi bi-trash3"></i></button>
