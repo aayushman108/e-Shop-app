@@ -1,5 +1,6 @@
 import { navigateToPage } from "../router";
-import { getSearchResult } from "../services/ApiServices";
+import { getSearchResult, logout } from "../services/ApiServices";
+import { showErrorToast, showSuccessToast } from "./Toasts";
 
 export function renderHeader() {
   const header = document.createElement("header");
@@ -36,7 +37,7 @@ export function renderHeader() {
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item nav-item__link" id="signup" href="#">Signup</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" id="logout" href="#">Signup</a></li>
+                  <li><a class="dropdown-item" id="logout" href="#">Logout</a></li>
                 </ul>
               </li>
               <li class="nav-item">
@@ -61,14 +62,15 @@ export function renderHeader() {
     </nav>
   `;
 
+  const logoutLink = header.querySelector(
+    "#logout"
+  ) as HTMLAnchorElement | null;
   const links = header.querySelectorAll(
     ".nav-item__link"
   ) as NodeListOf<HTMLAnchorElement>;
   links.forEach((link) => {
     link.addEventListener("click", handleNavLinkClick);
   });
-
-  document.body.prepend(header);
 
   //search
   const searchInput = header.querySelector("#searchInput") as HTMLInputElement;
@@ -79,6 +81,33 @@ export function renderHeader() {
       performSearch(query);
     }
   });
+
+  //logout
+  function removeTokens() {
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("access_token");
+  }
+  logoutLink?.addEventListener("click", async () => {
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      const refreshToken = localStorage.getItem("refresh_token");
+
+      if (!accessToken || !refreshToken) {
+        throw new Error("No access or refresh token found.");
+      }
+
+      await logout(refreshToken);
+
+      removeTokens();
+      showSuccessToast("Logged out successfully!");
+      navigateToPage("login");
+    } catch (error) {
+      showErrorToast(`${error}`);
+      throw error;
+    }
+  });
+
+  document.body.prepend(header);
 }
 
 const performSearch = async (query: string) => {

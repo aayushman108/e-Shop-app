@@ -23,6 +23,17 @@ export async function login(formData: ILogin) {
   }
 }
 
+export async function logout(refreshToken: string) {
+  try {
+    const response = await http.post("/api/users/logout", { refreshToken });
+    return response.data;
+    //console.log(response.data);
+  } catch (error) {
+    console.error("Error logging out:", error);
+    throw error;
+  }
+}
+
 export async function getFilteredProducts(filters: Record<string, string>) {
   try {
     console.log(new URLSearchParams(filters));
