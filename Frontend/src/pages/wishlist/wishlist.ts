@@ -1,7 +1,10 @@
+import { AxiosError } from "axios";
+import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 import { ICartProduct, IProduct } from "../../interface";
 import { navigateToPage } from "../../router";
 import {
   addToCart,
+  getSingleProduct,
   getWishlistProducts,
   removeFromWishlist,
 } from "../../services/ApiServices";
@@ -24,28 +27,53 @@ function renderWishlistProduct(product: IProduct) {
   const addToCartButton = wishlistItem.querySelector(
     ".add-to-cart-btn"
   ) as HTMLButtonElement;
+  const goToProductDetailsImg = wishlistItem.querySelector(
+    ".wishlist__item-image"
+  ) as HTMLDivElement;
   const deleteButton = wishlistItem.querySelector(
     ".delete-btn"
   ) as HTMLButtonElement;
 
   addToCartButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    console.log(product.productId);
-    if (userId) {
-      await addToCart(product.productId, userId);
-      await removeFromWishlist(product.productId, userId);
-    } else {
-      return;
+    try {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await addToCart(product.productId, userId);
+        showSuccessToast("Product added to cart successfully");
+        await removeFromWishlist(product.productId, userId);
+      } else {
+        navigateToPage("login");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        showErrorToast("Product already in cart");
+      }
     }
   });
+
   deleteButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    console.log(product.productId);
-    if (userId) {
-      await removeFromWishlist(product.productId, userId);
-      navigateToPage("wishlist");
-    } else {
-      return;
+    try {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await removeFromWishlist(product.productId, userId);
+        showSuccessToast("Product removed from wishlist");
+        navigateToPage("wishlist");
+      } else {
+        navigateToPage("login");
+      }
+    } catch (error) {
+      showErrorToast("Error removing product from wishlist");
+    }
+  });
+
+  goToProductDetailsImg.addEventListener("click", async () => {
+    try {
+      const productId = product.productId;
+      const productDetails = await getSingleProduct(productId);
+      const encodedProduct = encodeURIComponent(JSON.stringify(productDetails));
+      navigateToPage("singleProduct", encodedProduct);
+    } catch (error) {
+      showErrorToast("Error fetching product details");
     }
   });
 
