@@ -1,26 +1,13 @@
-//import watchImage from "../../assets/images/hellow.jpg";
-// export function renderHome() {
-//   const homePage = `
-//   <div>
-//   <img
-//         src= ${watchImage}
-//         width="100%"
-//         height="auto"
-//         alt="..."
-//       />
-//   </div>
-//   `;
-//   return homePage;
-// }
+import heroImage from "../../assets/images/hellow.jpg";
 
-export async function renderHome(): Promise<string> {
-  try {
-    const response = await fetch("./src/pages/home/home.html");
-    console.log(response);
-    const homeTemplate = await response.text();
-    return homeTemplate;
-  } catch (error) {
-    console.error("Error rendering home page:", error);
-    return "";
-  }
+export async function renderHome() {
+  const container = document.createElement("div");
+  container.className = "home";
+  container.innerHTML = /*html*/ `
+  <div class="home__hero-image">
+    <img src=${heroImage} alt="hero-image" />
+  </div>
+  `;
+
+  return container;
 }

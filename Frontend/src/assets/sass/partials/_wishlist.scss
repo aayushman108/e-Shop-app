@@ -1,7 +1,7 @@
 .wishlist {
   max-width: 1450px;
   margin: 0 auto;
-  padding: 50px 0;
+  padding: 50px 20px;
   @include d-flex(flex-start, column);
   gap: 10px;
   &__item {

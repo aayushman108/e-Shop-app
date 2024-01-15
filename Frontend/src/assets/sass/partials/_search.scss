@@ -1,7 +1,7 @@
 .search {
   max-width: 1450px;
-  margin: 0 auto;
-  margin: 100px 0;
+  margin: 100px auto;
+  padding: 0 20px;
   border-left: 1px solid black;
   @include d-flex(flex-start, row);
   &__item {
