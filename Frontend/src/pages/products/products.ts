@@ -41,32 +41,42 @@ function createProductElement(product: IProduct) {
   ) as HTMLButtonElement;
 
   addToCartButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    console.log(product.productId);
-    if (userId) {
-      await addToCart(product.productId, userId);
-    } else {
-      return;
-    }
-  });
-  addToWishlistButton.addEventListener("click", async () => {
-    const userId = localStorage.getItem("userId");
-    console.log(product.productId);
-    if (userId) {
-      await addToWishlist(product.productId, userId);
-    } else {
-      return;
-    }
-  });
-  goToProductDetailsButton.addEventListener("click", async () => {
-    const productId = product.productId;
     try {
-      const product = await getSingleProduct(productId);
-      console.log(product);
-      const encodedProduct = encodeURIComponent(JSON.stringify(product));
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await addToCart(product.productId, userId);
+        console.log("Product added to cart successfully!");
+      } else {
+        console.error("User ID not found.");
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  });
+
+  addToWishlistButton.addEventListener("click", async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        await addToWishlist(product.productId, userId);
+        console.log("Product added to wishlist successfully!");
+      } else {
+        console.error("User ID not found.");
+      }
+    } catch (error) {
+      console.error("Error adding product to wishlist:", error);
+    }
+  });
+
+  goToProductDetailsButton.addEventListener("click", async () => {
+    try {
+      const productId = product.productId;
+      const productDetails = await getSingleProduct(productId);
+      console.log(productDetails);
+      const encodedProduct = encodeURIComponent(JSON.stringify(productDetails));
       navigateToPage("singleProduct", encodedProduct);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching product details:", error);
     }
   });
 
@@ -143,18 +153,27 @@ export async function renderProducts() {
   ) as HTMLFormElement;
 
   applyFiltersButton.addEventListener("click", async () => {
-    const formData = new FormData(filterForm);
-    const filters: Record<string, string> = {};
+    try {
+      const formData = new FormData(filterForm);
+      const filters: Record<string, string> = {};
 
-    formData.forEach((value, key) => {
-      filters[key] = value === null || value === undefined ? "" : String(value);
-    });
+      formData.forEach((value, key) => {
+        filters[key] =
+          value === null || value === undefined ? "" : String(value);
+      });
 
-    await fetchAndRenderFilteredProducts(filters, productsContainer);
+      await fetchAndRenderFilteredProducts(filters, productsContainer);
+    } catch (error) {
+      console.error("Error applying filters:", error);
+    }
   });
 
   resetFiltersButton.addEventListener("click", async () => {
-    await fetchAndRenderFilteredProducts({}, productsContainer);
+    try {
+      await fetchAndRenderFilteredProducts({}, productsContainer);
+    } catch (error) {
+      console.error("Error resetting filters:", error);
+    }
   });
 
   // Initial render with default filters
