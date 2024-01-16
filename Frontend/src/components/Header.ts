@@ -46,9 +46,6 @@ export function renderHeader() {
               <li class="nav-item">
                 <a class="nav-link nav-item__link" id="cart" href="#">Cart</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link nav-item__link" id="checkout" href="#">Checkout</a>
-              </li>
             </ul>
             <form class="order-lg-1 order-sm-2" role="search">
               <input

@@ -102,5 +102,17 @@ export async function renderCart() {
     container.appendChild(renderCartProduct(Product, quantity));
   });
 
+  const checkoutButtonHTML = /* html */ `
+    <button id="checkout-btn">Proceed to Checkout</button>
+  `;
+  container.innerHTML += checkoutButtonHTML;
+
+  const checkoutButton = container.querySelector(
+    "#checkout-btn"
+  ) as HTMLButtonElement;
+  checkoutButton?.addEventListener("click", () => {
+    navigateToPage("checkout");
+  });
+
   return container;
 }
