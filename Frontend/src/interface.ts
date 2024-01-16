@@ -35,3 +35,16 @@ export interface ICartProduct {
   quantity: number;
   userId: string;
 }
+
+export interface ICustomer {
+  name: string;
+  email: string;
+  address: string;
+  phone: string;
+}
+
+export interface IPayment {
+  cardNumber: string;
+  expDate: string;
+  cvv: string;
+}

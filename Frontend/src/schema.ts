@@ -40,12 +40,12 @@ export const checkoutSchema = yup.object().shape({
   phone: yup
     .string()
     .matches(/^\+?[1-9]\d{1,14}$/, "Invalid phone number")
-    .required("Phone is required"),
+    .required("Phone number is required"),
   cardNumber: yup
     .string()
     .matches(/^\d{16}$/, "Card Number must be a 16-digit number")
     .required("Card Number is required"),
-  expirationDate: yup
+  expDate: yup
     .string()
     .matches(
       /^(0[1-9]|1[0-2])\/\d{2}$/,
