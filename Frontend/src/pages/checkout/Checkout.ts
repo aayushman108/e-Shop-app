@@ -23,7 +23,7 @@ function renderOrderedProduct(product: IProduct, quantity: number) {
 
 export async function renderCheckout() {
   const order = document.createElement("div");
-  order.className = "order-summary";
+  order.className = "order";
 
   const userId = localStorage.getItem("userId");
 

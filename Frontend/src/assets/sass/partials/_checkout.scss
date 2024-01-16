@@ -1,0 +1,54 @@
+.order {
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 20px;
+  @include d-flex(flex-start, column);
+  gap: 10px;
+  &__item {
+    @include d-flex(space-between, row);
+    align-items: center;
+    background-color: rgb(248, 244, 244);
+    border-radius: 5px;
+    padding: 10px;
+    gap: 15px;
+    @include tablet {
+    }
+    @include mobile {
+      @include d-flex(flex-start, row);
+      gap: 15px;
+    }
+    &-description {
+      p {
+        margin: 0;
+      }
+      > :first-child {
+        font-size: 1.2rem;
+        @include tablet {
+          font-size: 1.1rem;
+        }
+        @include mobile {
+          font-size: 0.9rem;
+        }
+      }
+      > :nth-child(2) {
+        font-size: 1.2rem;
+        @include tablet {
+          font-size: 1.1rem;
+        }
+        @include mobile {
+          font-size: 0.9rem;
+        }
+      }
+    }
+    &-price {
+      @include d-flex(flex-start, column);
+      align-items: center;
+      p {
+        margin: 0;
+      }
+      input[type="number"] {
+        width: 75px;
+      }
+    }
+  }
+}
