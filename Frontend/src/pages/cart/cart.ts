@@ -100,7 +100,6 @@ export async function renderCart() {
   cartPageDetails.forEach((cart) => {
     const { Product, quantity } = cart;
     container.appendChild(renderCartProduct(Product, quantity));
-    console.log(cart);
   });
 
   return container;

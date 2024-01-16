@@ -2,9 +2,41 @@ import * as yup from "yup";
 import { showSuccessToast } from "../../components/Toasts";
 import { navigateToPage } from "../../router";
 import { checkoutSchema } from "../../schema";
-import { ICustomer, IPayment } from "../../interface";
+import { ICartProduct, ICustomer, IPayment, IProduct } from "../../interface";
+import { getCartProducts } from "../../services/ApiServices";
+
+function renderOrderedProduct(product: IProduct, quantity: number) {
+  const orderItem = document.createElement("div");
+  orderItem.className = "order__item";
+  orderItem.innerHTML = /* html */ `
+        <div class= "order__item-description">
+          <p>${product.productName}</p>
+          <p>${quantity}</p>
+        </div>
+        <div class="order__item-price">
+          <p>$${product.price.toFixed(2)}/piece</p>
+          <p>Total: $${(product.price * quantity).toFixed(2)} </p>
+        </div>
+      `;
+  return orderItem;
+}
 
 export async function renderCheckout() {
+  const order = document.createElement("div");
+  order.className = "order-summary";
+
+  const userId = localStorage.getItem("userId");
+
+  let orderDetails: ICartProduct[] = [];
+  if (userId) {
+    orderDetails = await getCartProducts(userId);
+  }
+
+  orderDetails.forEach((cart) => {
+    const { Product, quantity } = cart;
+    order.appendChild(renderOrderedProduct(Product, quantity));
+  });
+
   const checkout = document.createElement("div");
   checkout.className = "checkout";
   checkout.innerHTML = /*html*/ `
@@ -47,19 +79,6 @@ export async function renderCheckout() {
       <div class="card mb-4">
           <div class="card-body">
               <h4 class="card-title">Order Summary</h4>
-              <!-- Display the items in the cart with their prices -->
-  
-              <!-- Example item -->
-              <div class="d-flex justify-content-between mb-2">
-                  <span>Product Name</span>
-                  <span>$X.XX</span>
-              </div>
-  
-              <!-- Display total price -->
-              <div class="d-flex justify-content-between">
-                  <span>Total:</span>
-                  <span>$X.XX</span>
-              </div>
           </div>
       </div>
   
@@ -166,6 +185,9 @@ export async function renderCheckout() {
       }
     }
   });
+
+  const orderSummary = checkout.querySelectorAll(".card-body")[1];
+  orderSummary.appendChild(order);
 
   return checkout;
 }
