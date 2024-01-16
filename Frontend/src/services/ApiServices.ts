@@ -34,12 +34,20 @@ export async function logout(refreshToken: string) {
   }
 }
 
-export async function getFilteredProducts(filters: Record<string, string>) {
+export async function getFilteredProducts(
+  filters: Record<string, string>,
+  page: number,
+  pageSize: number
+) {
   try {
-    console.log(new URLSearchParams(filters));
+    const queryParams = new URLSearchParams({
+      ...filters,
+      page: String(page),
+      pageSize: String(pageSize),
+    });
 
     const response = await http.get(
-      `/api/products?${new URLSearchParams(filters)}`
+      `/api/products?${new URLSearchParams(queryParams)}`
     );
     console.log(response.data);
     return response.data;

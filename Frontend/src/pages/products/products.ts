@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { showErrorToast, showSuccessToast } from "../../components/Toasts";
-import { IProduct } from "../../interface";
+import { IProduct, IProductPageDetails } from "../../interface";
 import { navigateToPage } from "../../router";
 import {
   addToCart,
@@ -8,6 +8,7 @@ import {
   getFilteredProducts,
   getSingleProduct,
 } from "../../services/ApiServices";
+import { PAGE_SIZE } from "../../constant";
 
 function createProductElement(product: IProduct) {
   const productItem = document.createElement("div");
@@ -104,10 +105,19 @@ function createProductElement(product: IProduct) {
 
 async function fetchAndRenderFilteredProducts(
   filters: Record<string, string>,
+  page: number,
+  pageSize: number,
   productsContainer: HTMLDivElement
 ) {
   try {
-    const productsPageProducts = await getFilteredProducts(filters);
+    const productsPageProducts: IProductPageDetails = await getFilteredProducts(
+      filters,
+      page,
+      pageSize
+    );
+    const pageNumber: number = productsPageProducts.page;
+    const totalPages: number = productsPageProducts.totalPages;
+    const totalProducts: number = productsPageProducts.totalProducts;
     const products: IProduct[] = productsPageProducts.products;
     const productsList = document.createElement("div");
     productsList.className = "products-list";
@@ -118,9 +128,49 @@ async function fetchAndRenderFilteredProducts(
 
     productsContainer.innerHTML = "";
     productsContainer.appendChild(productsList);
+    renderPaginationControls(page, totalPages, filters, productsContainer);
+    return { pageNumber, pageSize, totalPages, totalProducts };
   } catch (error) {
     showErrorToast("Error fetching or rendering filtered products");
   }
+}
+
+function renderPaginationControls(
+  currentPage: number,
+  totalPages: number,
+  filters: Record<string, string>,
+  productsContainer: HTMLDivElement
+) {
+  const paginationContainer = document.createElement("div");
+  paginationContainer.className = "pagination-container";
+
+  for (let i = 1; i <= totalPages; i++) {
+    const pageButton = document.createElement("button");
+    pageButton.textContent = i.toString();
+    pageButton.className = "page__button";
+    pageButton.addEventListener("click", async () => {
+      try {
+        await fetchAndRenderFilteredProducts(
+          filters,
+          i,
+          PAGE_SIZE,
+          productsContainer
+        );
+      } catch (error) {
+        showErrorToast("Error fetching products for page " + i);
+      }
+    });
+
+    pageButton.classList.remove("page__button--active");
+
+    if (i === currentPage) {
+      pageButton.classList.add("page__button--active");
+    }
+
+    paginationContainer.appendChild(pageButton);
+  }
+
+  productsContainer.appendChild(paginationContainer);
 }
 
 export async function renderProducts() {
@@ -181,7 +231,12 @@ export async function renderProducts() {
           value === null || value === undefined ? "" : String(value);
       });
 
-      await fetchAndRenderFilteredProducts(filters, productsContainer);
+      await fetchAndRenderFilteredProducts(
+        filters,
+        1,
+        PAGE_SIZE,
+        productsContainer
+      );
     } catch (error) {
       showErrorToast("Error applying filters");
     }
@@ -189,14 +244,20 @@ export async function renderProducts() {
 
   resetFiltersButton.addEventListener("click", async () => {
     try {
-      await fetchAndRenderFilteredProducts({}, productsContainer);
+      await fetchAndRenderFilteredProducts({}, 1, PAGE_SIZE, productsContainer);
     } catch (error) {
       showErrorToast("Error resetting filters");
     }
   });
 
   // Initial render with default filters
-  await fetchAndRenderFilteredProducts({}, productsContainer);
+  const pageDetails = await fetchAndRenderFilteredProducts(
+    {},
+    1,
+    PAGE_SIZE,
+    productsContainer
+  );
+  console.log(pageDetails);
 
   container.appendChild(filterFormContainer);
   container.appendChild(productsContainer);

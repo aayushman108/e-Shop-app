@@ -48,3 +48,11 @@ export interface IPayment {
   expDate: string;
   cvv: string;
 }
+
+export interface IProductPageDetails {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalProducts: number;
+  products: IProduct[];
+}

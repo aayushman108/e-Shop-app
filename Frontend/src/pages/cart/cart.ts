@@ -90,6 +90,10 @@ export async function renderCart() {
   const container = document.createElement("div");
   container.className = "cart";
 
+  const heading = document.createElement("h2");
+  heading.textContent = "Shopping Cart";
+  container.appendChild(heading);
+
   const userId = localStorage.getItem("userId");
 
   let cartPageDetails: ICartProduct[] = [];

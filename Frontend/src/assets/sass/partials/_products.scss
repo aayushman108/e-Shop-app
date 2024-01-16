@@ -109,5 +109,16 @@
         }
       }
     }
+    .pagination-container {
+      margin-top: 60px;
+      @include d-flex(center, row);
+      gap: 15px;
+      .page__button {
+        &--active {
+          background-color: rgb(5, 5, 79);
+          color: white;
+        }
+      }
+    }
   }
 }

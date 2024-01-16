@@ -40,7 +40,7 @@ const ProductController = {
     const minPrice = req.query.minPrice as string;
 
     const page = parseInt(req.query.page as string) || 1;
-    const pageSize = parseInt(req.query.pageSize as string) || 10;
+    const pageSize = parseInt(req.query.pageSize as string) || 8;
 
     try {
       const products = await ProductService.getProducts(page, pageSize, {

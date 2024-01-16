@@ -84,6 +84,10 @@ export async function renderWishlist() {
   const container = document.createElement("div");
   container.className = "wishlist";
 
+  const heading = document.createElement("h2");
+  heading.textContent = "Wishlist Products";
+  container.appendChild(heading);
+
   const userId = localStorage.getItem("userId");
 
   let wishlistPageDetails: ICartProduct[] = [];
