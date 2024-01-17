@@ -1,5 +1,9 @@
 import Toastify from "toastify-js";
 
+/**
+ * Displays a success toast notification with the provided message.
+ * @param message - The success message to be displayed.
+ */
 export function showSuccessToast(message: string) {
   const toast = Toastify({
     text: message,
@@ -14,7 +18,10 @@ export function showSuccessToast(message: string) {
   toast.showToast();
 }
 
-// Function to show an error toast
+/**
+ * Displays an error toast notification with the provided message.
+ * @param message - The error message to be displayed.
+ */
 export function showErrorToast(message: string) {
   const toast = Toastify({
     text: message,

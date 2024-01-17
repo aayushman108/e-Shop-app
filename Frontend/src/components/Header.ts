@@ -2,6 +2,9 @@ import { navigateToPage } from "../router";
 import { getSearchResult, logout } from "../services/ApiServices";
 import { showErrorToast, showSuccessToast } from "./Toasts";
 
+/**
+ * Renders the header navigation bar with links and search functionality.
+ */
 export function renderHeader() {
   const header = document.createElement("header");
   header.className = "header";
@@ -82,7 +85,9 @@ export function renderHeader() {
     }
   });
 
-  //logout
+  /**
+   * Removes access and refresh tokens from local storage.
+   */
   function removeTokens() {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("access_token");
@@ -110,6 +115,10 @@ export function renderHeader() {
   document.body.prepend(header);
 }
 
+/**
+ * Performs a search based on the provided query and navigates to the search results page.
+ * @param query - The search query.
+ */
 const performSearch = async (query: string) => {
   if (!query) {
     alert("Please enter a search term.");
@@ -129,6 +138,10 @@ const performSearch = async (query: string) => {
   }
 };
 
+/**
+ * Handles the click event for navigation links by preventing the default action and navigating to the specified page.
+ * @param event - The click event.
+ */
 function handleNavLinkClick(event: Event) {
   event.preventDefault();
 

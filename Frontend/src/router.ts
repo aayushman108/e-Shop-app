@@ -10,11 +10,17 @@ import { renderSingleProduct } from "./pages/productDetails/ProductDetails";
 import { showErrorToast } from "./components/Toasts";
 import { renderCheckout } from "./pages/checkout/Checkout";
 
+/**
+ * Initializes the application by rendering the header and navigating to the home page.
+ */
 export function initializeApp() {
   renderHeader();
   navigateToPage("home");
 }
 
+/**
+ * Clears the content of the app container.
+ */
 function clearContent() {
   const contentContainer = document.getElementById("app");
   if (contentContainer) {
@@ -22,6 +28,10 @@ function clearContent() {
   }
 }
 
+/**
+ * Renders the provided content to the application container.
+ * @param content - The content to be rendered.
+ */
 function renderContent(content: any) {
   const contentContainer = document.getElementById("app");
   if (!contentContainer) return;
@@ -33,6 +43,10 @@ function renderContent(content: any) {
   }
 }
 
+/**
+ * Updates the URL based on the current page.
+ * @param page - The current page.
+ */
 function updateUrl(page: string) {
   const url = `/${page}`;
 
@@ -43,6 +57,11 @@ function updateUrl(page: string) {
   }
 }
 
+/**
+ * Navigates to the specified page and renders its content.
+ * @param page - The page to navigate to.
+ * @param data - Additional data needed for rendering the page.
+ */
 export async function navigateToPage(page: string, data?: any) {
   clearContent();
 
@@ -142,6 +161,10 @@ export async function navigateToPage(page: string, data?: any) {
   }
 }
 
+/**
+ * Handles the navigation styling by updating the active link.
+ * @param value - The value of the active link.
+ */
 function handleNavStyle(value: string) {
   const links = document.querySelectorAll(
     ".nav-link"
