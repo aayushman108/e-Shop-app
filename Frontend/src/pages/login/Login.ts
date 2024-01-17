@@ -6,7 +6,11 @@ import { AxiosError } from "axios";
 import { loginSchema } from "../../schema";
 import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 
-export async function renderLogin() {
+/**
+ * Renders the login page with a form for user login.
+ * @returns The rendered login page.
+ */
+export async function renderLogin(): Promise<HTMLDivElement> {
   const loginPage = document.createElement("div") as HTMLDivElement;
   loginPage.className = "login";
   loginPage.innerHTML = /* html */ `

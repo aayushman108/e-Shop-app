@@ -10,7 +10,12 @@ import {
 } from "../../services/ApiServices";
 import { PAGE_SIZE } from "../../constant";
 
-function createProductElement(product: IProduct) {
+/**
+ * Creates a product element for rendering in the products list.
+ * @param product - The product to create an element for.
+ * @returns - The HTML element representing the product.
+ */
+function createProductElement(product: IProduct): HTMLDivElement {
   const productItem = document.createElement("div");
   productItem.className = "products-list__item";
   productItem.innerHTML = /* html */ `
@@ -103,6 +108,14 @@ function createProductElement(product: IProduct) {
   return productItem;
 }
 
+/**
+ * Fetches and renders filtered products based on the provided filters, page, and page size.
+ * @param filters - The filters to apply to the products.
+ * @param page - The page number to fetch.
+ * @param pageSize - The number of products to display per page.
+ * @param productsContainer - The container to render the products into.
+ * @returns - A promise resolving to page details.
+ */
 async function fetchAndRenderFilteredProducts(
   filters: Record<string, string>,
   page: number,
@@ -135,6 +148,13 @@ async function fetchAndRenderFilteredProducts(
   }
 }
 
+/**
+ * Renders pagination controls for navigating through product pages.
+ * @param currentPage - The current page number.
+ * @param totalPages - The total number of pages.
+ * @param filters - The current filters applied.
+ * @param productsContainer - The container to render pagination controls.
+ */
 function renderPaginationControls(
   currentPage: number,
   totalPages: number,
@@ -173,7 +193,11 @@ function renderPaginationControls(
   productsContainer.appendChild(paginationContainer);
 }
 
-export async function renderProducts() {
+/**
+ * Renders the entire products page with filter options, products list, and pagination controls.
+ * @returns - A promise resolving to the HTML element representing the products page.
+ */
+export async function renderProducts(): Promise<HTMLDivElement> {
   const container = document.createElement("div");
   container.className = "products";
   const filterFormContainer = document.createElement("div");

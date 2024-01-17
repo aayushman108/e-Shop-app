@@ -8,6 +8,11 @@ import {
 } from "../../services/ApiServices";
 import { navigateToPage } from "../../router";
 
+/**
+ * Renders a product in the search results.
+ * @param product - The product to render.
+ * @returns - The HTML element representing the rendered product.
+ */
 function renderProduct(product: IProduct) {
   const productItem = document.createElement("div");
   productItem.className = "search__item";
@@ -95,10 +100,17 @@ function renderProduct(product: IProduct) {
     }
   });
 
-  console.log(productItem);
   return productItem;
 }
-export async function renderSearches() {
+
+/**
+ * Renders the search results page with products based on the query parameter.
+ * @returns - A promise resolving to the HTML element representing the search results.
+ */
+
+export async function renderSearches(): Promise<
+  HTMLDivElement | null | undefined
+> {
   const container = document.createElement("div");
   container.className = "search";
 

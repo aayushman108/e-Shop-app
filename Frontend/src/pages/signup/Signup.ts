@@ -6,7 +6,11 @@ import { AxiosError } from "axios";
 import { showErrorToast, showSuccessToast } from "../../components/Toasts";
 import { signupSchema } from "../../schema";
 
-export async function renderSignup() {
+/**
+ * Renders the signup page with a form for user registration.
+ * @returns The rendered signup page.
+ */
+export async function renderSignup(): Promise<HTMLDivElement> {
   const signupPage = document.createElement("div") as HTMLDivElement;
   signupPage.className = "signup";
   signupPage.innerHTML = /* html */ `

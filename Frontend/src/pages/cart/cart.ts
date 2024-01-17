@@ -8,7 +8,17 @@ import {
   updateCartProduct,
 } from "../../services/ApiServices";
 
-function renderCartProduct(product: IProduct, quantity: number) {
+/**
+ * Renders a single cart product HTML element.
+ * @param product - The product to be rendered in the cart.
+ * @param quantity - The quantity of the product in the cart.
+ * @returns - The HTML element representing the cart product.
+ */
+
+function renderCartProduct(
+  product: IProduct,
+  quantity: number
+): HTMLDivElement {
   const cartItem = document.createElement("div");
   cartItem.className = "cart__item";
   cartItem.innerHTML = /* html */ `
@@ -86,7 +96,11 @@ function renderCartProduct(product: IProduct, quantity: number) {
   return cartItem;
 }
 
-export async function renderCart() {
+/**
+ * Renders the entire cart page with all the cart products.
+ * @returns - A promise resolving to the HTML element representing the cart page.
+ */
+export async function renderCart(): Promise<HTMLDivElement> {
   const container = document.createElement("div");
   container.className = "cart";
 

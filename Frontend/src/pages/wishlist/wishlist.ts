@@ -9,7 +9,12 @@ import {
   removeFromWishlist,
 } from "../../services/ApiServices";
 
-function renderWishlistProduct(product: IProduct) {
+/**
+ * Renders a single wishlist product HTML element.
+ * @param product - The product to be rendered in the wishlist.
+ * @returns - The HTML element representing the wishlist product.
+ */
+function renderWishlistProduct(product: IProduct): HTMLDivElement {
   const wishlistItem = document.createElement("div");
   wishlistItem.className = "wishlist__item";
   wishlistItem.innerHTML = /* html */ `
@@ -80,7 +85,11 @@ function renderWishlistProduct(product: IProduct) {
   return wishlistItem;
 }
 
-export async function renderWishlist() {
+/**
+ * Renders the entire wishlist page with all wishlist products.
+ * @returns - A promise resolving to the HTML element representing the wishlist page.
+ */
+export async function renderWishlist(): Promise<HTMLDivElement> {
   const container = document.createElement("div");
   container.className = "wishlist";
 

@@ -4,7 +4,12 @@ import { IProduct } from "../../interface";
 import { navigateToPage } from "../../router";
 import { addToCart, addToWishlist } from "../../services/ApiServices";
 
-function renderProduct(product: IProduct) {
+/**
+ * Renders a single product with details with options to add to cart or wishlist.
+ * @param product - The product to be rendered.
+ * @returns - The HTML element representing the single product view.
+ */
+function renderProduct(product: IProduct): HTMLDivElement {
   const productContainer = document.createElement("div");
   productContainer.className = "product__container";
   productContainer.innerHTML = /*html*/ `
@@ -77,7 +82,13 @@ function renderProduct(product: IProduct) {
   return productContainer;
 }
 
-export async function renderSingleProduct() {
+/**
+ * Renders the entire single product view based on the URL search parameter.
+ * @returns - A promise resolving to the HTML element representing the single product view or null if there's an error.
+ */
+export async function renderSingleProduct(): Promise<
+  HTMLDivElement | null | undefined
+> {
   const container = document.createElement("div");
   container.className = "product";
 

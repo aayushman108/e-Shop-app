@@ -5,7 +5,16 @@ import { checkoutSchema } from "../../schema";
 import { ICartProduct, ICustomer, IPayment, IProduct } from "../../interface";
 import { getCartProducts } from "../../services/ApiServices";
 
-function renderOrderedProduct(product: IProduct, quantity: number) {
+/**
+ * Renders an ordered product in the checkout summary.
+ * @param product - The product to render.
+ * @param quantity - The quantity of the product.
+ * @returns - The HTML element representing the rendered ordered product.
+ */
+function renderOrderedProduct(
+  product: IProduct,
+  quantity: number
+): HTMLDivElement {
   const orderItem = document.createElement("div");
   orderItem.className = "order__item";
   orderItem.innerHTML = /* html */ `
@@ -21,7 +30,11 @@ function renderOrderedProduct(product: IProduct, quantity: number) {
   return orderItem;
 }
 
-export async function renderCheckout() {
+/**
+ * Renders the checkout page with customer information, order summary, and payment form.
+ * @returns - A promise resolving to the HTML element representing the checkout page.
+ */
+export async function renderCheckout(): Promise<HTMLDivElement> {
   const order = document.createElement("div");
   order.className = "order";
 
