@@ -69,7 +69,7 @@ const ProductService = {
       };
     }
 
-    const products = await Product.findAll({
+    const { count, rows: products } = await Product.findAndCountAll({
       offset,
       limit: pageSize,
       where,
@@ -79,17 +79,7 @@ const ProductService = {
       throw new NotFoundError("Products not found");
     }
 
-    return products;
-  },
-
-  getTotalProductsCount: async () => {
-    const productCount = await Product.count();
-
-    if (productCount === 0) {
-      throw new NotFoundError("Products not found");
-    }
-
-    return productCount;
+    return { products, count };
   },
 
   getProductById: async (productId: string) => {

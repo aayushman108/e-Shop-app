@@ -128,6 +128,7 @@ async function fetchAndRenderFilteredProducts(
       page,
       pageSize
     );
+    console.log(productsPageProducts);
     const pageNumber: number = productsPageProducts.page;
     const totalPages: number = productsPageProducts.totalPages;
     const totalProducts: number = productsPageProducts.totalProducts;

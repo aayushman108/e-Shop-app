@@ -43,12 +43,12 @@ const ProductController = {
     const pageSize = parseInt(req.query.pageSize as string) || 8;
 
     try {
-      const products = await ProductService.getProducts(page, pageSize, {
-        category,
-        minPrice,
-        maxPrice,
-      });
-      const totalProducts = await ProductService.getTotalProductsCount();
+      const { products, count: totalProducts } =
+        await ProductService.getProducts(page, pageSize, {
+          category,
+          minPrice,
+          maxPrice,
+        });
       const totalPages = calculateTotalPages(totalProducts, pageSize);
 
       res.json({
