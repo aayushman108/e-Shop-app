@@ -13,22 +13,22 @@ const ProductController = {
       if (!file) return res.status(400).send("No image in the request");
 
       const fileName = file.filename;
-      const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
 
       const productData = {
         productName,
         description,
         price,
         stockQuantity,
-        imageUrl: `${basePath}${fileName}`,
+        imageUrl: fileName,
         category,
       };
 
       const product = await ProductService.createProduct(productData);
 
-      res
-        .status(HttpStatus.OK)
-        .json({ message: "Product created successfully", product });
+      res.status(HttpStatus.OK).json({
+        message: "Product created successfully",
+        product,
+      });
     } catch (error) {
       next(error);
     }
@@ -51,6 +51,11 @@ const ProductController = {
         });
       const totalPages = calculateTotalPages(totalProducts, pageSize);
 
+      products.forEach((product) => {
+        const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
+        product.imageUrl = `${basePath}${product.imageUrl}`;
+      });
+
       res.json({
         products,
         page,
@@ -67,6 +72,10 @@ const ProductController = {
     try {
       const productId = req.params.productId;
       const product = await ProductService.getProductById(productId);
+
+      const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
+      product.imageUrl = `${basePath}${product.imageUrl}`;
+
       res.json(product);
     } catch (error) {
       next(error);
@@ -83,6 +92,12 @@ const ProductController = {
       const searchResult = await ProductService.getSearchProducts(
         query as string
       );
+
+      searchResult.forEach((product) => {
+        const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
+        product.imageUrl = `${basePath}${product.imageUrl}`;
+      });
+
       res.json(searchResult);
     } catch (error) {
       next(error);

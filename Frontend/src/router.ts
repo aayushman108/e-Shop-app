@@ -80,9 +80,11 @@ export async function navigateToPage(page: string, data?: any) {
       handleNavStyle(page);
       updateUrl(page);
       try {
+        console.log("hellow world");
         const content = await renderCart();
         renderContent(content);
       } catch (error) {
+        console.log(error);
         showErrorToast(`Error rendering cart page: ${error}`);
       }
       break;

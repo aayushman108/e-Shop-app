@@ -1,4 +1,5 @@
 import { showErrorToast, showSuccessToast } from "../../components/Toasts";
+import { IMAGE_BASE_PATH } from "../../constant";
 import { ICartProduct, IProduct } from "../../interface";
 import { navigateToPage } from "../../router";
 import {
@@ -21,6 +22,13 @@ function renderCartProduct(
 ): HTMLDivElement {
   const cartItem = document.createElement("div");
   cartItem.className = "cart__item";
+
+  if (!product) {
+    return cartItem;
+  }
+
+  product.imageUrl = `${IMAGE_BASE_PATH}${product.imageUrl}`;
+
   cartItem.innerHTML = /* html */ `
   <div class= "cart__item-image">
     <img src= "${product.imageUrl}" alt= "..." />
@@ -109,7 +117,6 @@ export async function renderCart(): Promise<HTMLDivElement> {
   container.appendChild(heading);
 
   const userId = localStorage.getItem("userId");
-
   let cartPageDetails: ICartProduct[] = [];
   if (userId) {
     cartPageDetails = await getCartProducts(userId);
@@ -128,6 +135,5 @@ export async function renderCart(): Promise<HTMLDivElement> {
   });
 
   container.appendChild(checkoutButton);
-
   return container;
 }

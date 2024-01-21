@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import CartService from "../services/CartService";
 import HttpStatus from "http-status-codes";
+import Product from "../models/Product";
 
 const CartController = {
   getUserCart: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.params.userId;
-      console.log(userId);
       const cart = await CartService.getUserCart(userId);
+
       return res.json(cart);
     } catch (error) {
       next(error);

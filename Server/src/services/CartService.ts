@@ -4,12 +4,10 @@ import ConflictError from "../error/ConflictError";
 
 const CartService = {
   getUserCart: async (userId: string) => {
-    //console.log(userId);
     const allCartProducts = await Cart.findAll({
       where: { userId },
       include: [{ all: true }],
     });
-    console.log(allCartProducts);
 
     if (allCartProducts.length === 0) {
       throw new NotFoundError("Products not found");
@@ -19,7 +17,6 @@ const CartService = {
   },
 
   addToCart: async (userId: string, productId: string, quantity: number) => {
-    console.log(userId, productId);
     try {
       const existingProduct = await Cart.findOne({
         where: { userId, productId },

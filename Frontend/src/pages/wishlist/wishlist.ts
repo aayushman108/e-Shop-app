@@ -8,6 +8,7 @@ import {
   getWishlistProducts,
   removeFromWishlist,
 } from "../../services/ApiServices";
+import { IMAGE_BASE_PATH } from "../../constant";
 
 /**
  * Renders a single wishlist product HTML element.
@@ -17,6 +18,13 @@ import {
 function renderWishlistProduct(product: IProduct): HTMLDivElement {
   const wishlistItem = document.createElement("div");
   wishlistItem.className = "wishlist__item";
+
+  if (!product) {
+    return wishlistItem;
+  }
+
+  product.imageUrl = `${IMAGE_BASE_PATH}${product.imageUrl}`;
+
   wishlistItem.innerHTML = /* html */ `
   <div class="wishlist__item-image">
     <img src= "${product.imageUrl}" alt= "..." />
